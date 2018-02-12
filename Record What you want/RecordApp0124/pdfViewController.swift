@@ -193,6 +193,11 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         // initialize Touch Gesture
         pdfView2.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(make_bookmark(_:)))
+        /*
+         if
+         
+        */
+        
         pdfView2.addGestureRecognizer(tapGesture)
         tapGesture.location(in: pdfView2)
     }
@@ -460,33 +465,38 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
    
 
-    //***** make_bookmark, aaa, ccc : Button gesture Action ***** //
+    //***** make_bookmark, go_next_page, go_previous_page : Button gesture Action ***** //
     
     @objc func make_bookmark(_ gesture: UITapGestureRecognizer) {
         
-        let position = gesture.location(in: pdfView2)
-        let nx = Int(position.x)
-        let ny = Int(position.y)
-        let button = UIButton()
-        button.frame = CGRect(x: nx, y: ny + 50 , width: 20 , height: 20 )
-        button.backgroundColor = UIColor.red.withAlphaComponent(0)
-        button.setImage(UIImage(named : "bookmark2"), for: .normal)
-        self.view.addSubview(button)
+        if self.buttonStatus.image(for: UIControlState()) == #imageLiteral(resourceName: "recordBefore"){
+            return
+        }else{
+            let position = gesture.location(in: pdfView2)
+            let nx = Int(position.x)
+            let ny = Int(position.y)
+            let button = UIButton()
+            button.frame = CGRect(x: nx, y: ny + 50 , width: 20 , height: 20 )
+            button.backgroundColor = UIColor.red.withAlphaComponent(0)
+            button.setImage(UIImage(named : "bookmark2"), for: .normal)
+            self.view.addSubview(button)
+            
+            self.numberofBookmark += 1
+            let bookmark : String = "Bookmark " + "\(String(describing: numberofBookmark))"
+            
         
-        self.numberofBookmark += 1
-        let bookmark : String = "Bookmark " + "\(String(describing: numberofBookmark))"
-        
-        if numberofBookmark >= 1 {
-            self.BookmarkPage[bookmark] = self.usePageNumber 
+            self.BookmarkPage[bookmark] = self.usePageNumber
             print(numberofBookmark)
+            
+            
+            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, name: bookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!)
+            
+            buttonArr.append(bookMarkButton)
+            
+            // 18.02.03 19:26 배열에 잘 저장되는 점 확인(문제 : 터치 통해 page 변경할 때만 pageNumber 가 배열에 올바르게 저장됨, thumbNail 통해 페이지 변경할 때도 pageNumber가 잘 바뀌어야 함!)
+            takeBookmarkTime()
         }
-        
-        let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, name: bookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!)
-        
-        buttonArr.append(bookMarkButton)
-        
-        // 18.02.03 19:26 배열에 잘 저장되는 점 확인(문제 : 터치 통해 page 변경할 때만 pageNumber 가 배열에 올바르게 저장됨, thumbNail 통해 페이지 변경할 때도 pageNumber가 잘 바뀌어야 함!)
-        takeBookmarkTime()
+       
     }
     
  
