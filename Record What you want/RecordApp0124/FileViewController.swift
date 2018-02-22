@@ -179,83 +179,13 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
         return true
     }
     
-    // plus 버튼 클릭 시 web browser , url 을 이용한 파일 로드
-    @IBAction func webCallBtn(_ sender: UIButton) {
+    // plus 버튼 클릭 시 web browser , url 을 이용한 파일 로드 (하단의 downloadFileFromURL 함수 사용)
     
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let firstAction: UIAlertAction = UIAlertAction(title: "Open by Web browser", style: .default) { action -> Void in
-            if let url = URL(string: "https://www.google.com") {
-                UIApplication.shared.open(url, options: [:])
-            }
+    @IBAction func webCallBtn(_ sender: UIButton) {
+        self.downloadFileFromURL() {
+            self.activityIndicatorStop()
+            self.checkFileNonRecordedList()
         }
-        
-        let secondAction: UIAlertAction = UIAlertAction(title: "Open by URL", style: .default){ action -> Void in
-            let alert = UIAlertController(title: " Type URL ", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            let okAction = UIAlertAction(title: "OK", style: .default) { action -> Void in
-                let textField = alert.textFields![0] as UITextField
-                let urlName = textField.text!
-                
-                // urlName 마지막 문자열, 파일 이름 출력
-                
-                let urlString = urlName.components(separatedBy: "/")
-                let lastWord = urlString.last
-                
-                let fileManager = FileManager.default
-                let filePath2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-                let filePath = filePath2.appendingPathComponent("FolderList").appendingPathComponent(self.FileHeader)
-                    .appendingPathComponent("Non Recorded").appendingPathComponent(lastWord!)
-       
-                //Create URL to the source file you want to download
-                let fileURL = URL(string: urlName)
-                
-                let sessionConfig = URLSessionConfiguration.default
-                let session = URLSession(configuration: sessionConfig)
-                
-                let request = URLRequest(url:fileURL!)
-                
-                let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
-                    if let tempLocalUrl = tempLocalUrl, error == nil {
-                        // Success
-                        if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                            print("Successfully downloaded. Status code: \(statusCode)")
-                        }
-                        
-                        do {
-                            try FileManager.default.copyItem(at: tempLocalUrl, to: filePath)
-                        } catch (let writeError) {
-                            print("Error creating a file \(filePath) : \(writeError)")
-                        }
-                        
-                    } else {
-                        print("Error took place while downloading a file. Error description: %@", error?.localizedDescription as Any);
-                    }
-                }
-                self.activityIndicatorStart()
-                task.resume()
-                
-                if fileManager.fileExists(atPath: filePath.path) == true {
-                    self.activityIndicatorStop()
-                    self.checkFileNonRecordedList()
-                }
-            }
-            
-            alert.addTextField()
-            alert.addAction(cancelAction)
-            alert.addAction(okAction)
-            self.present(alert, animated:false)
-        }
-        
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
-        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
-        
-        // add actions
-        actionSheetController.addAction(firstAction)
-        actionSheetController.addAction(secondAction)
-        actionSheetController.addAction(cancelAction)
-        
-        // present an actionSheet...
-        present(actionSheetController, animated: true, completion: nil)
     }
     
     // 리스트 체크 후 동기화
@@ -292,7 +222,9 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
             }
         
         self.fileNonRecordedList = tmpfileNonRecordedList
-        self.tableView.reloadData()
+        DispatchQueue.main.async(execute: {
+            self.tableView.reloadData()
+        })
        
         }
 
@@ -300,7 +232,7 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
             super.didReceiveMemoryWarning()
         }
     
-    // activity controller 설정
+    // activity controller 시작 설정
     func activityIndicatorStart() {
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
@@ -309,8 +241,86 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
         view.addSubview(activityIndicator)
     }
     
+    // activity controller 종료 설정
     func activityIndicatorStop() {
-        activityIndicator.stopAnimating()
+        DispatchQueue.main.async(execute: {
+            self.activityIndicator.stopAnimating()
+        })
     }
     
+    // URL 을 이용한 PDF 파일 다운로드
+    func downloadFileFromURL(completion: @escaping () -> ()) {
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let firstAction: UIAlertAction = UIAlertAction(title: "Open by Web browser", style: .default) { action -> Void in
+            if let url = URL(string: "https://www.google.com") {
+                UIApplication.shared.open(url, options: [:])
+            }
+        }
+        
+        let secondAction: UIAlertAction = UIAlertAction(title: "Open by URL", style: .default){ action -> Void in
+            let alert = UIAlertController(title: " Type URL ", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            let okAction = UIAlertAction(title: "OK", style: .default) { action -> Void in
+                let textField = alert.textFields![0] as UITextField
+                let urlName = textField.text!
+                
+                // urlName 마지막 문자열, 파일 이름 출력
+                
+                let urlString = urlName.components(separatedBy: "/")
+                let lastWord = urlString.last
+                
+                let fileManager = FileManager.default
+                let filePath2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+                let filePath = filePath2.appendingPathComponent("FolderList").appendingPathComponent(self.FileHeader)
+                    .appendingPathComponent("Non Recorded").appendingPathComponent(lastWord!)
+                
+                //Create URL to the source file you want to download
+                let fileURL = URL(string: urlName)
+                
+                let sessionConfig = URLSessionConfiguration.default
+                let session = URLSession(configuration: sessionConfig)
+                
+                let request = URLRequest(url:fileURL!)
+                
+                let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
+                    if let tempLocalUrl = tempLocalUrl, error == nil {
+                        // Success
+                        if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                            print("Successfully downloaded. Status code: \(statusCode)")
+                        }
+                       
+                        
+                        do {
+                            try FileManager.default.copyItem(at: tempLocalUrl, to: filePath)
+                        } catch (let writeError) {
+                            print("Error creating a file \(filePath) : \(writeError)")
+                        }
+                        
+                    } else {
+                        print("Error took place while downloading a file. Error description: %@", error?.localizedDescription as Any);
+                    }
+                    completion()
+                }
+                self.activityIndicatorStart()
+                task.resume()
+                
+            }
+            
+            alert.addTextField()
+            alert.addAction(cancelAction)
+            alert.addAction(okAction)
+            self.present(alert, animated:false)
+        }
+        
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
+        cancelAction.setValue(UIColor.red, forKey: "titleTextColor")
+        
+        // add actions
+        actionSheetController.addAction(firstAction)
+        actionSheetController.addAction(secondAction)
+        actionSheetController.addAction(cancelAction)
+        
+        // present an actionSheet...
+        present(actionSheetController, animated: true, completion: nil)
+    }
 }
