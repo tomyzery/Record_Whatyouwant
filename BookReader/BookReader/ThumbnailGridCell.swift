@@ -17,6 +17,7 @@ class ThumbnailGridCell: UICollectionViewCell {
     var image: UIImage? = nil {
         didSet {
             imageView.image = image
+            
         }
     }
     var pageNumber = 0 {

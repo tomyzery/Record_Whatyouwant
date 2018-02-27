@@ -11,9 +11,27 @@ import PDFKit
 import AVFoundation
 
 class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate,
-SearchViewControllerDelegate{
+    SearchViewControllerDelegate, ThumbnailGridViewControllerDelegate{
+    /* thumbNail */
+    func thumbnailGridViewController(_ thumbnailGridViewController: ThumbnailGridViewController, didSelectPage page: PDFPage) {
+        _ = navigationController?.popViewController(animated: false)
+        pdfView2.go(to: page)
+        
+    }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let viewController = segue.destination as? ThumbnailGridViewController {
+            viewController.pdfDocument = pdfView2.document
+            viewController.delegate = self
+        }
+    }
     ////////////////////////////////////////////////////////////
+    
+    // Search
+    ////////////////////////////////////////////////////////////
+ 
+
     func searchViewController(_ searchViewController: SearchViewController, didSelectSearchResult selection: PDFSelection) {
         selection.color = .yellow
         pdfView2.currentSelection = selection
@@ -23,14 +41,14 @@ SearchViewControllerDelegate{
 
     var searchNavigationController: UINavigationController?
     let pdfViewGestureRecognizer = PDFViewGestureRecognizer()
-    var pdfDocument: PDFDocument?
+    
     
     @objc func showSearchView(_ sender: UIBarButtonItem) {
         if let searchNavigationController = self.searchNavigationController {
             present(searchNavigationController, animated: true, completion: nil)
         } else if let navigationController = storyboard?.instantiateViewController(withIdentifier: String(describing: SearchViewController.self)) as? UINavigationController,
             let searchViewController = navigationController.topViewController as? SearchViewController {
-            searchViewController.pdfDocument = pdfDocument
+            searchViewController.pdfDocument = pdfView2.document
             searchViewController.delegate = self
             present(navigationController, animated: true, completion: nil)
             
@@ -38,6 +56,7 @@ SearchViewControllerDelegate{
         }
     }
     ////////////////////////////////////////////////////////////
+    
     
     
     // delegate (다른 클래스에 있는 변수들을 가져다 쓰기 위해 사용)
@@ -135,8 +154,7 @@ SearchViewControllerDelegate{
         // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
         pdfView2.addGestureRecognizer(pdfViewGestureRecognizer)
-        
-        
+        // 18.2.27 추가
         
         makeDefaultFile()
         checkmp3List()
@@ -187,6 +205,8 @@ SearchViewControllerDelegate{
     }
     
     /////
+    
+    @IBOutlet weak var tableOfContentsButton: UIBarButtonItem!
     func initNav(){
         
         let backbutton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(sceneBack))
@@ -196,11 +216,20 @@ SearchViewControllerDelegate{
                                           action: #selector(showShare) )
         
         let searchButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Search"), style: .plain, target: self, action: #selector(showSearchView(_:)))
-        
-        self.navigationItem.leftBarButtonItem = backbutton
+        /*
+        let tableOfContentsButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Grid"), style : .plain, target: self,
+                                                    action: #selector(showThumbNailGridView))
+        */
+        self.navigationItem.leftBarButtonItems = [backbutton, tableOfContentsButton]
         self.navigationItem.rightBarButtonItems = [sharebutton, searchButton]
     }
+    /////
     
+    @objc func showThumbNailGridView(/*_sender: UIBarButtonItem*/){
+        
+            }
+    
+    /////
     func initSideGesture(){
         let dragLeft = UIScreenEdgePanGestureRecognizer(
             target: self,
@@ -616,11 +645,7 @@ SearchViewControllerDelegate{
     /*
      // MARK: - Navigation
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
+     
      */
     
 }
@@ -667,8 +692,7 @@ extension pdfViewController {
     
     /// PDFViewの初期処理をする
     func setupPdfView() {
-        // 18.2.27 추가
-        pdfView2.document = pdfDocument
+        
         
         // 初期表示が画面サイズにピッタリ収まるようにする
         pdfView2.autoScales = true
@@ -676,7 +700,7 @@ extension pdfViewController {
         
         // サムネイルのセットアップ
         setupPdfThumbnailView(layoutMode: .horizontal,
-                            thumbnailSize: CGSize(width: 20, height: 20))
+                            thumbnailSize: CGSize(width: 20, height: 28))
         
         // 余白を消す
         pdfView2.displaysPageBreaks = true

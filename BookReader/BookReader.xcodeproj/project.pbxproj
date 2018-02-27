@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		140E24F71F0A675900298665 /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140E24F61F0A675900298665 /* BookmarkViewController.swift */; };
 		140E24FA1F0A73F200298665 /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140E24F81F0A73F200298665 /* SearchResultsCell.swift */; };
-		140E250C1F0A790F00298665 /* SearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 140E250E1F0A790F00298665 /* SearchResultsCell.xib */; };
 		140E25111F0A797E00298665 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 140E25081F0A78C900298665 /* Main.storyboard */; };
 		140E25121F0A798400298665 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 140E250F1F0A793100298665 /* LaunchScreen.storyboard */; };
 		140E25141F0AB67C00298665 /* ActionMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140E25131F0AB67C00298665 /* ActionMenuViewController.swift */; };
@@ -26,13 +25,13 @@
 		14155C8C1F0A460E00A53380 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C8B1F0A460E00A53380 /* SearchViewController.swift */; };
 		1421EF151F0A411E00BEB695 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1421EF141F0A411E00BEB695 /* AppDelegate.swift */; };
 		1421EF1C1F0A411E00BEB695 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1421EF1B1F0A411E00BEB695 /* Assets.xcassets */; };
+		DD513B3620455E130089836E /* SearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD513B3520455E120089836E /* SearchResultsCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		140E24F61F0A675900298665 /* BookmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		140E24F81F0A73F200298665 /* SearchResultsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCell.swift; sourceTree = "<group>"; };
 		140E25091F0A78C900298665 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		140E250D1F0A790F00298665 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SearchResultsCell.xib; sourceTree = "<group>"; };
 		140E25101F0A793100298665 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		140E25131F0AB67C00298665 /* ActionMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionMenuViewController.swift; sourceTree = "<group>"; };
 		140E25151F0AC19600298665 /* BookshelfCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfCell.swift; sourceTree = "<group>"; };
@@ -40,7 +39,7 @@
 		140E251E1F0AF89D00298665 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ThumbnailGridCell.xib; sourceTree = "<group>"; };
 		14155C7D1F0A41B600A53380 /* BookshelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfViewController.swift; sourceTree = "<group>"; };
 		14155C7F1F0A425F00A53380 /* BookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewController.swift; sourceTree = "<group>"; };
-		14155C811F0A449F00A53380 /* ThumbnailGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGridViewController.swift; sourceTree = "<group>"; };
+		14155C811F0A449F00A53380 /* ThumbnailGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThumbnailGridViewController.swift; path = "../../Record What you want/RecordApp0124/ThumbnailGridViewController.swift"; sourceTree = "<group>"; };
 		14155C831F0A450E00A53380 /* ThumbnailGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGridCell.swift; sourceTree = "<group>"; };
 		14155C851F0A459200A53380 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		14155C871F0A45BE00A53380 /* OutlineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineCell.swift; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		1421EF141F0A411E00BEB695 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1421EF1B1F0A411E00BEB695 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1421EF201F0A411E00BEB695 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DD513B3520455E120089836E /* SearchResultsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SearchResultsCell.xib; path = "../../Record What you want/RecordApp0124/SearchResultsCell.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +97,7 @@
 				140E25131F0AB67C00298665 /* ActionMenuViewController.swift */,
 				140E25081F0A78C900298665 /* Main.storyboard */,
 				140E251F1F0AF89D00298665 /* ThumbnailGridCell.xib */,
-				140E250E1F0A790F00298665 /* SearchResultsCell.xib */,
+				DD513B3520455E120089836E /* SearchResultsCell.xib */,
 				140E250F1F0A793100298665 /* LaunchScreen.storyboard */,
 				1421EF1B1F0A411E00BEB695 /* Assets.xcassets */,
 				1421EF201F0A411E00BEB695 /* Info.plist */,
@@ -167,8 +167,8 @@
 				140E25111F0A797E00298665 /* Main.storyboard in Resources */,
 				140E25121F0A798400298665 /* LaunchScreen.storyboard in Resources */,
 				1421EF1C1F0A411E00BEB695 /* Assets.xcassets in Resources */,
-				140E250C1F0A790F00298665 /* SearchResultsCell.xib in Resources */,
 				140E251D1F0AF89D00298665 /* ThumbnailGridCell.xib in Resources */,
+				DD513B3620455E130089836E /* SearchResultsCell.xib in Resources */,
 				140E251A1F0AE1BD00298665 /* Sample.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,14 +205,6 @@
 				140E25091F0A78C900298665 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		140E250E1F0A790F00298665 /* SearchResultsCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				140E250D1F0A790F00298665 /* Base */,
-			);
-			name = SearchResultsCell.xib;
 			sourceTree = "<group>";
 		};
 		140E250F1F0A793100298665 /* LaunchScreen.storyboard */ = {

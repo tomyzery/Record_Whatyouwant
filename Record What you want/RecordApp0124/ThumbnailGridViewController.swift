@@ -32,12 +32,13 @@ class ThumbnailGridViewController: UICollectionViewController, UICollectionViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let backgroundView = UIView()
         backgroundView.backgroundColor = .gray
         collectionView?.backgroundView = backgroundView
 
         collectionView?.register(UINib(nibName: String(describing: ThumbnailGridCell.self), bundle: nil), forCellWithReuseIdentifier: "Cell")
+        print("가나다라 : \(String(describing: pdfDocument))" )
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

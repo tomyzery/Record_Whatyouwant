@@ -136,7 +136,7 @@ class BookViewController: UIViewController, UIPopoverPresentationControllerDeleg
         resume()
         pdfView.go(to: page)
     }
-
+    
     private func resume() {
         let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Chevron"), style: .plain, target: self, action: #selector(back(_:)))
         let tableOfContentsButton = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: .plain, target: self, action: #selector(showTableOfContents(_:)))
