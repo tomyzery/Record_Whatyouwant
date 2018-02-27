@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,6 +23,9 @@
 		D5F22611201B1495009999DB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F2260D201B1494009999DB /* Info.plist */; };
 		D5F22612201B1495009999DB /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F2260F201B1494009999DB /* Toolbar.swift */; };
 		D5F22613201B1495009999DB /* ToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F22610201B1494009999DB /* ToolbarItem.swift */; };
+		DD4CCB852045291B00BF9BDF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4CCB842045291A00BF9BDF /* SearchViewController.swift */; };
+		DD4CCB8720452B9600BF9BDF /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4CCB8620452B9600BF9BDF /* SearchResultsCell.swift */; };
+		DD513B2C204538F10089836E /* SearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD513B2B204538F10089836E /* SearchResultsCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,9 @@
 		D5F2260E201B1494009999DB /* Toolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Toolbar.h; sourceTree = "<group>"; };
 		D5F2260F201B1494009999DB /* Toolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		D5F22610201B1494009999DB /* ToolbarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarItem.swift; sourceTree = "<group>"; };
+		DD4CCB842045291A00BF9BDF /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = ../../BookReader/BookReader/SearchViewController.swift; sourceTree = "<group>"; };
+		DD4CCB8620452B9600BF9BDF /* SearchResultsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultsCell.swift; path = ../../BookReader/BookReader/SearchResultsCell.swift; sourceTree = "<group>"; };
+		DD513B2B204538F10089836E /* SearchResultsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,10 +88,13 @@
 				D58C523A2031922B002741AE /* FileViewController.swift */,
 				D58C523B2031922B002741AE /* FolderViewController.swift */,
 				D5A02EE32018658C00AE211D /* pdfViewController.swift */,
+				DD4CCB842045291A00BF9BDF /* SearchViewController.swift */,
+				DD4CCB8620452B9600BF9BDF /* SearchResultsCell.swift */,
 				D5A02EE5201867E600AE211D /* sideBarViewController.swift */,
 				D5A02EE720186E6F00AE211D /* revealViewController.swift */,
 				C24B9B0E2027F6EE00C2DD45 /* ButtonInfo.swift */,
 				D5A02EC82018582400AE211D /* Main.storyboard */,
+				DD513B2B204538F10089836E /* SearchResultsCell.xib */,
 				D5A02ECB2018582400AE211D /* Assets.xcassets */,
 				D5A02ECD2018582400AE211D /* LaunchScreen.storyboard */,
 				D581DFAE2024242800DF57A1 /* Info.plist */,
@@ -142,7 +151,7 @@
 				};
 			};
 			buildConfigurationList = D5A02EBC2018582400AE211D /* Build configuration list for PBXProject "RecordApp0201" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -169,6 +178,7 @@
 				D5798F4B20293A1F0059399C /* Human Respiratory.pdf in Resources */,
 				D5A02ECC2018582400AE211D /* Assets.xcassets in Resources */,
 				D5A02ECA2018582400AE211D /* Main.storyboard in Resources */,
+				DD513B2C204538F10089836E /* SearchResultsCell.xib in Resources */,
 				D581DFAF2024242800DF57A1 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,10 +191,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D58C523C2031922B002741AE /* FileViewController.swift in Sources */,
+				DD4CCB852045291B00BF9BDF /* SearchViewController.swift in Sources */,
 				D5A02EC72018582400AE211D /* ViewController.swift in Sources */,
 				D5F22612201B1495009999DB /* Toolbar.swift in Sources */,
 				D5A02EE6201867E600AE211D /* sideBarViewController.swift in Sources */,
 				D5A02EE42018658C00AE211D /* pdfViewController.swift in Sources */,
+				DD4CCB8720452B9600BF9BDF /* SearchResultsCell.swift in Sources */,
 				D5A02EE820186E6F00AE211D /* revealViewController.swift in Sources */,
 				D58C523D2031922B002741AE /* FolderViewController.swift in Sources */,
 				D5F22613201B1495009999DB /* ToolbarItem.swift in Sources */,
@@ -268,6 +280,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -317,7 +330,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -330,7 +344,10 @@
 				DEVELOPMENT_TEAM = S73J37RQ69;
 				INFOPLIST_FILE = RecordApp0124/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = kr.ac.korea.RecordApp0124;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -346,7 +363,10 @@
 				DEVELOPMENT_TEAM = S73J37RQ69;
 				INFOPLIST_FILE = RecordApp0124/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = kr.ac.korea.RecordApp0124;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

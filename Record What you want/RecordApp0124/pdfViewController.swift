@@ -7,17 +7,41 @@
 //
 
 import UIKit
-import WebKit
 import PDFKit
 import AVFoundation
 
-
-class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate{
+class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate,
+SearchViewControllerDelegate{
     
+    ////////////////////////////////////////////////////////////
+    func searchViewController(_ searchViewController: SearchViewController, didSelectSearchResult selection: PDFSelection) {
+        selection.color = .yellow
+        pdfView2.currentSelection = selection
+        pdfView2.go(to: selection)
+    }
+    
+
+    var searchNavigationController: UINavigationController?
     let pdfViewGestureRecognizer = PDFViewGestureRecognizer()
+    var pdfDocument: PDFDocument?
+    
+    @objc func showSearchView(_ sender: UIBarButtonItem) {
+        if let searchNavigationController = self.searchNavigationController {
+            present(searchNavigationController, animated: true, completion: nil)
+        } else if let navigationController = storyboard?.instantiateViewController(withIdentifier: String(describing: SearchViewController.self)) as? UINavigationController,
+            let searchViewController = navigationController.topViewController as? SearchViewController {
+            searchViewController.pdfDocument = pdfDocument
+            searchViewController.delegate = self
+            present(navigationController, animated: true, completion: nil)
+            
+            searchNavigationController = navigationController
+        }
+    }
+    ////////////////////////////////////////////////////////////
+    
     
     // delegate (다른 클래스에 있는 변수들을 가져다 쓰기 위해 사용)
-    var delegate3: sideBarViewController?
+    // var delegate3: sideBarViewController?
     var delegate: revealViewController?
     
     // Outlet 변수들
@@ -111,7 +135,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
         pdfView2.addGestureRecognizer(pdfViewGestureRecognizer)
-        //
+        
+        
         
         makeDefaultFile()
         checkmp3List()
@@ -170,8 +195,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                                           target: self,
                                           action: #selector(showShare) )
         
+        let searchButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Search"), style: .plain, target: self, action: #selector(showSearchView(_:)))
+        
         self.navigationItem.leftBarButtonItem = backbutton
-        self.navigationItem.rightBarButtonItem = sharebutton
+        self.navigationItem.rightBarButtonItems = [sharebutton, searchButton]
     }
     
     func initSideGesture(){
@@ -528,7 +555,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     @objc func bookmark_to_AudioPlayer(_ sender: UIButton){
         for component in buttonArr {
             if component.button == sender {
-                
+        
                 playTimeFromBookmark = takeTimeList[component.mark_number - 1]
                 lBlCurrentTime.title = playTimeFromBookmark
                 showItems()
@@ -640,6 +667,8 @@ extension pdfViewController {
     
     /// PDFViewの初期処理をする
     func setupPdfView() {
+        // 18.2.27 추가
+        pdfView2.document = pdfDocument
         
         // 初期表示が画面サイズにピッタリ収まるようにする
         pdfView2.autoScales = true
