@@ -16,7 +16,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     func thumbnailGridViewController(_ thumbnailGridViewController: ThumbnailGridViewController, didSelectPage page: PDFPage) {
         _ = navigationController?.popViewController(animated: false)
         pdfView2.go(to: page)
-        
+        // bookmark_show_or_hide()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -36,6 +36,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         selection.color = .yellow
         pdfView2.currentSelection = selection
         pdfView2.go(to: selection)
+        //bookmark_show_or_hide()
     }
     
 
@@ -248,7 +249,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
 
     func initPdfGesture(){
-        let SlideGestureDown = UISwipeGestureRecognizer(target: self, action: #selector(go_previous_page(_:)))
+        let SlideGestureDown = UISwipeGestureRecognizer(target: self, action:#selector(go_previous_page(_:)))
         let SlideGestureUp = UISwipeGestureRecognizer(target: self, action: #selector(go_next_page(_:)))
         
         //pdfView2.addGestureRecognizer(tapGesture)
@@ -384,6 +385,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
     @objc func pdfViewPageChanged(_ notification: Notification) {
         checkPage()
+        bookmark_show_or_hide()
     }
  
 
@@ -580,7 +582,6 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         }
        
     }
-    
     @objc func bookmark_to_AudioPlayer(_ sender: UIButton){
         for component in buttonArr {
             if component.button == sender {
@@ -590,48 +591,39 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                 showItems()
             }
         }
-        
-        
-        
+
     }
     
- 
+    func bookmark_show_or_hide(){
+        for component in buttonArr {
+            if component.pageNum == Int((pdfView2.currentPage?.label)!){
+                component.button.isHidden = false
+            } else {
+                component.button.isHidden = true
+            }
+        }
+    }
     
     @objc func go_next_page(_ gesture: UISwipeGestureRecognizer) {
-        
-        let temp : Int = Int((pdfView2.currentPage?.label)!)!
         
         gesture.direction = .up
         
         self.pdfView2.goToNextPage(gesture)
         pdfView2.canGoToNextPage()
-        
-        for component in buttonArr {
-            if component.pageNum == temp + 1 {
-                component.button.isHidden = false
-            } else {
-                component.button.isHidden = true
-            }
-        }
+        // bookmark_show_or_hide()
+       
         checkPage()
     }
     
     @objc func go_previous_page(_ gesture: UISwipeGestureRecognizer) {
-        let temp : Int = Int((pdfView2.currentPage?.label)!)!
+        
         
         gesture.direction = .down
         
         self.pdfView2.goToPreviousPage(gesture)
         pdfView2.canGoToPreviousPage()
+        // bookmark_show_or_hide()
         
-        for component in buttonArr {
-            if component.pageNum == temp - 1 {
-                component.button.isHidden = false
-            } else {
-                component.button.isHidden = true
-                
-            }
-        }
         checkPage()
        
        

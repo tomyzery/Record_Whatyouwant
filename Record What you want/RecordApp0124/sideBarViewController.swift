@@ -37,6 +37,10 @@ class sideBarViewController: UITableViewController {
                 }
                     delegate2?.cur_page.text = "Page " + (delegate2?.pdfView2.currentPage?.label)! + " of " + "\(delegate2?.checkTotalPage() ?? 34)"
             }
+                ////////////////////////////////////////////
+        
+                ////////////////////////////////////////////
+            
         }
        
         if indexPath.section == 1 {
