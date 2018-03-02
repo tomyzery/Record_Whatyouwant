@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C24B9B0F2027F6EE00C2DD45 /* ButtonInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24B9B0E2027F6EE00C2DD45 /* ButtonInfo.swift */; };
+		D516F35B2049435000C706F0 /* ThumbnailGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516F35A2049434F00C706F0 /* ThumbnailGridCell.swift */; };
+		D516F35E2049436500C706F0 /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516F35C2049436500C706F0 /* SearchResultsCell.swift */; };
+		D516F35F2049436500C706F0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516F35D2049436500C706F0 /* SearchViewController.swift */; };
+		D516F3612049438400C706F0 /* ThumbnailGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D516F3602049438400C706F0 /* ThumbnailGridCell.xib */; };
 		D5798F4B20293A1F0059399C /* Human Respiratory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D5798F4A20293A1F0059399C /* Human Respiratory.pdf */; };
 		D581DFAF2024242800DF57A1 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D581DFAE2024242800DF57A1 /* Info.plist */; };
 		D58C523920319218002741AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58C523820319218002741AE /* AppDelegate.swift */; };
@@ -23,16 +27,16 @@
 		D5F22611201B1495009999DB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F2260D201B1494009999DB /* Info.plist */; };
 		D5F22612201B1495009999DB /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F2260F201B1494009999DB /* Toolbar.swift */; };
 		D5F22613201B1495009999DB /* ToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F22610201B1494009999DB /* ToolbarItem.swift */; };
-		DD4CCB852045291B00BF9BDF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4CCB842045291A00BF9BDF /* SearchViewController.swift */; };
-		DD4CCB8720452B9600BF9BDF /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4CCB8620452B9600BF9BDF /* SearchResultsCell.swift */; };
 		DD513B2C204538F10089836E /* SearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD513B2B204538F10089836E /* SearchResultsCell.xib */; };
 		DD513B3220455AB00089836E /* ThumbnailGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD513B3120455AB00089836E /* ThumbnailGridViewController.swift */; };
-		DD513B3420455AB80089836E /* ThumbnailGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD513B3320455AB80089836E /* ThumbnailGridCell.swift */; };
-		DD513B392045710C0089836E /* ThumbnailGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD513B372045710B0089836E /* ThumbnailGridCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C24B9B0E2027F6EE00C2DD45 /* ButtonInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonInfo.swift; sourceTree = "<group>"; };
+		D516F35A2049434F00C706F0 /* ThumbnailGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailGridCell.swift; sourceTree = "<group>"; };
+		D516F35C2049436500C706F0 /* SearchResultsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsCell.swift; sourceTree = "<group>"; };
+		D516F35D2049436500C706F0 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		D516F3602049438400C706F0 /* ThumbnailGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailGridCell.xib; sourceTree = "<group>"; };
 		D5798F4A20293A1F0059399C /* Human Respiratory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Human Respiratory.pdf"; sourceTree = "<group>"; };
 		D581DFAE2024242800DF57A1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D58C523820319218002741AE /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,12 +54,8 @@
 		D5F2260E201B1494009999DB /* Toolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Toolbar.h; sourceTree = "<group>"; };
 		D5F2260F201B1494009999DB /* Toolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		D5F22610201B1494009999DB /* ToolbarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarItem.swift; sourceTree = "<group>"; };
-		DD4CCB842045291A00BF9BDF /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = ../../BookReader/BookReader/SearchViewController.swift; sourceTree = "<group>"; };
-		DD4CCB8620452B9600BF9BDF /* SearchResultsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultsCell.swift; path = ../../BookReader/BookReader/SearchResultsCell.swift; sourceTree = "<group>"; };
 		DD513B2B204538F10089836E /* SearchResultsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsCell.xib; sourceTree = "<group>"; };
 		DD513B3120455AB00089836E /* ThumbnailGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGridViewController.swift; sourceTree = "<group>"; };
-		DD513B3320455AB80089836E /* ThumbnailGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThumbnailGridCell.swift; path = ../../BookReader/BookReader/ThumbnailGridCell.swift; sourceTree = "<group>"; };
-		DD513B382045710B0089836E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = ../../BookReader/BookReader/Base.lproj/ThumbnailGridCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 		D516F3592049053300C706F0 /* xiv */ = {
 			isa = PBXGroup;
 			children = (
-				DD513B372045710B0089836E /* ThumbnailGridCell.xib */,
+				D516F3602049438400C706F0 /* ThumbnailGridCell.xib */,
 				DD513B2B204538F10089836E /* SearchResultsCell.xib */,
 			);
 			path = xiv;
@@ -105,9 +105,9 @@
 				D58C523A2031922B002741AE /* FileViewController.swift */,
 				D5A02EE32018658C00AE211D /* pdfViewController.swift */,
 				DD513B3120455AB00089836E /* ThumbnailGridViewController.swift */,
-				DD513B3320455AB80089836E /* ThumbnailGridCell.swift */,
-				DD4CCB842045291A00BF9BDF /* SearchViewController.swift */,
-				DD4CCB8620452B9600BF9BDF /* SearchResultsCell.swift */,
+				D516F35A2049434F00C706F0 /* ThumbnailGridCell.swift */,
+				D516F35C2049436500C706F0 /* SearchResultsCell.swift */,
+				D516F35D2049436500C706F0 /* SearchViewController.swift */,
 				D5A02EE5201867E600AE211D /* sideBarViewController.swift */,
 				D5A02EE720186E6F00AE211D /* revealViewController.swift */,
 				C24B9B0E2027F6EE00C2DD45 /* ButtonInfo.swift */,
@@ -190,7 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD513B392045710C0089836E /* ThumbnailGridCell.xib in Resources */,
+				D516F3612049438400C706F0 /* ThumbnailGridCell.xib in Resources */,
 				D5F22611201B1495009999DB /* Info.plist in Resources */,
 				D5A02ECF2018582400AE211D /* LaunchScreen.storyboard in Resources */,
 				D5798F4B20293A1F0059399C /* Human Respiratory.pdf in Resources */,
@@ -209,14 +209,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D58C523C2031922B002741AE /* FileViewController.swift in Sources */,
-				DD4CCB852045291B00BF9BDF /* SearchViewController.swift in Sources */,
+				D516F35B2049435000C706F0 /* ThumbnailGridCell.swift in Sources */,
 				D5A02EC72018582400AE211D /* ViewController.swift in Sources */,
 				D5F22612201B1495009999DB /* Toolbar.swift in Sources */,
+				D516F35E2049436500C706F0 /* SearchResultsCell.swift in Sources */,
 				D5A02EE6201867E600AE211D /* sideBarViewController.swift in Sources */,
 				D5A02EE42018658C00AE211D /* pdfViewController.swift in Sources */,
-				DD513B3420455AB80089836E /* ThumbnailGridCell.swift in Sources */,
 				DD513B3220455AB00089836E /* ThumbnailGridViewController.swift in Sources */,
-				DD4CCB8720452B9600BF9BDF /* SearchResultsCell.swift in Sources */,
+				D516F35F2049436500C706F0 /* SearchViewController.swift in Sources */,
 				D5A02EE820186E6F00AE211D /* revealViewController.swift in Sources */,
 				D58C523D2031922B002741AE /* FolderViewController.swift in Sources */,
 				D5F22613201B1495009999DB /* ToolbarItem.swift in Sources */,
@@ -242,14 +242,6 @@
 				D5A02ECE2018582400AE211D /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		DD513B372045710B0089836E /* ThumbnailGridCell.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DD513B382045710B0089836E /* Base */,
-			);
-			name = ThumbnailGridCell.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
