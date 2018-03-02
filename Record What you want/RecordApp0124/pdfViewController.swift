@@ -232,12 +232,7 @@ SearchViewControllerDelegate{
         // initialize Touch Gesture
         pdfView2.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(make_bookmark(_:)))
-<<<<<<< HEAD
-
-        
-=======
        
->>>>>>> 31b3cda1751377163a2da434256b89bc44763e17
         pdfView2.addGestureRecognizer(tapGesture)
         tapGesture.location(in: pdfView2)
     }
