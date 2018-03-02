@@ -193,10 +193,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         // initialize Touch Gesture
         pdfView2.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(make_bookmark(_:)))
-        /*
-         if
-         
-        */
+
         
         pdfView2.addGestureRecognizer(tapGesture)
         tapGesture.location(in: pdfView2)
