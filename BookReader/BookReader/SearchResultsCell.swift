@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 class SearchResultsCell: UITableViewCell {
     var section: String? = nil {
         didSet {

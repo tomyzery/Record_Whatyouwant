@@ -22,7 +22,8 @@ class ThumbnailGridCell: UICollectionViewCell {
     }
     var pageNumber = 0 {
         didSet {
-            pageNumberLabel.text = String(pageNumber)
+            pageNumberLabel.text = String(pageNumber + 1)
+            pageNumberLabel.isHidden = false
         }
     }
     @IBOutlet private weak var imageView: UIImageView!
