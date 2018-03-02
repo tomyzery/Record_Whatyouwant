@@ -588,6 +588,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         for component in buttonArr {
             if component.button == sender {
                 pauseAudio()
+                playAudio()
                 playTimeFromBookmark = takeTimeList[component.mark_number - 1]
                 lBlCurrentTime.title = playTimeFromBookmark
                 showItems()

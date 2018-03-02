@@ -17,7 +17,6 @@
 		140E251D1F0AF89D00298665 /* ThumbnailGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 140E251F1F0AF89D00298665 /* ThumbnailGridCell.xib */; };
 		14155C7E1F0A41B600A53380 /* BookshelfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C7D1F0A41B600A53380 /* BookshelfViewController.swift */; };
 		14155C801F0A425F00A53380 /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C7F1F0A425F00A53380 /* BookViewController.swift */; };
-		14155C821F0A449F00A53380 /* ThumbnailGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C811F0A449F00A53380 /* ThumbnailGridViewController.swift */; };
 		14155C841F0A450E00A53380 /* ThumbnailGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C831F0A450E00A53380 /* ThumbnailGridCell.swift */; };
 		14155C861F0A459200A53380 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C851F0A459200A53380 /* OutlineViewController.swift */; };
 		14155C881F0A45BE00A53380 /* OutlineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C871F0A45BE00A53380 /* OutlineCell.swift */; };
@@ -25,7 +24,7 @@
 		14155C8C1F0A460E00A53380 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14155C8B1F0A460E00A53380 /* SearchViewController.swift */; };
 		1421EF151F0A411E00BEB695 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1421EF141F0A411E00BEB695 /* AppDelegate.swift */; };
 		1421EF1C1F0A411E00BEB695 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1421EF1B1F0A411E00BEB695 /* Assets.xcassets */; };
-		DD513B3620455E130089836E /* SearchResultsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD513B3520455E120089836E /* SearchResultsCell.xib */; };
+		73EDF74E204903E400F2E3C5 /* ThumbnailGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EDF74D204903E400F2E3C5 /* ThumbnailGridViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +38,6 @@
 		140E251E1F0AF89D00298665 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ThumbnailGridCell.xib; sourceTree = "<group>"; };
 		14155C7D1F0A41B600A53380 /* BookshelfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookshelfViewController.swift; sourceTree = "<group>"; };
 		14155C7F1F0A425F00A53380 /* BookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookViewController.swift; sourceTree = "<group>"; };
-		14155C811F0A449F00A53380 /* ThumbnailGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThumbnailGridViewController.swift; path = "../../Record What you want/RecordApp0124/ThumbnailGridViewController.swift"; sourceTree = "<group>"; };
 		14155C831F0A450E00A53380 /* ThumbnailGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailGridCell.swift; sourceTree = "<group>"; };
 		14155C851F0A459200A53380 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		14155C871F0A45BE00A53380 /* OutlineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineCell.swift; sourceTree = "<group>"; };
@@ -49,7 +47,8 @@
 		1421EF141F0A411E00BEB695 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1421EF1B1F0A411E00BEB695 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1421EF201F0A411E00BEB695 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DD513B3520455E120089836E /* SearchResultsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SearchResultsCell.xib; path = "../../Record What you want/RecordApp0124/SearchResultsCell.xib"; sourceTree = "<group>"; };
+		73EDF74D204903E400F2E3C5 /* ThumbnailGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThumbnailGridViewController.swift; path = ../../Record_what_you_want/RecordApp0124/ThumbnailGridViewController.swift; sourceTree = "<group>"; };
+		73EDF74F204903F400F2E3C5 /* SearchResultsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,10 +85,10 @@
 				14155C7D1F0A41B600A53380 /* BookshelfViewController.swift */,
 				140E25151F0AC19600298665 /* BookshelfCell.swift */,
 				14155C7F1F0A425F00A53380 /* BookViewController.swift */,
-				14155C811F0A449F00A53380 /* ThumbnailGridViewController.swift */,
 				14155C831F0A450E00A53380 /* ThumbnailGridCell.swift */,
 				14155C851F0A459200A53380 /* OutlineViewController.swift */,
 				14155C871F0A45BE00A53380 /* OutlineCell.swift */,
+				73EDF74D204903E400F2E3C5 /* ThumbnailGridViewController.swift */,
 				140E24F61F0A675900298665 /* BookmarkViewController.swift */,
 				14155C8B1F0A460E00A53380 /* SearchViewController.swift */,
 				140E24F81F0A73F200298665 /* SearchResultsCell.swift */,
@@ -97,7 +96,7 @@
 				140E25131F0AB67C00298665 /* ActionMenuViewController.swift */,
 				140E25081F0A78C900298665 /* Main.storyboard */,
 				140E251F1F0AF89D00298665 /* ThumbnailGridCell.xib */,
-				DD513B3520455E120089836E /* SearchResultsCell.xib */,
+				73EDF74F204903F400F2E3C5 /* SearchResultsCell.xib */,
 				140E250F1F0A793100298665 /* LaunchScreen.storyboard */,
 				1421EF1B1F0A411E00BEB695 /* Assets.xcassets */,
 				1421EF201F0A411E00BEB695 /* Info.plist */,
@@ -168,7 +167,6 @@
 				140E25121F0A798400298665 /* LaunchScreen.storyboard in Resources */,
 				1421EF1C1F0A411E00BEB695 /* Assets.xcassets in Resources */,
 				140E251D1F0AF89D00298665 /* ThumbnailGridCell.xib in Resources */,
-				DD513B3620455E130089836E /* SearchResultsCell.xib in Resources */,
 				140E251A1F0AE1BD00298665 /* Sample.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,13 +184,13 @@
 				140E25141F0AB67C00298665 /* ActionMenuViewController.swift in Sources */,
 				140E25161F0AC19600298665 /* BookshelfCell.swift in Sources */,
 				14155C861F0A459200A53380 /* OutlineViewController.swift in Sources */,
+				73EDF74E204903E400F2E3C5 /* ThumbnailGridViewController.swift in Sources */,
 				14155C8C1F0A460E00A53380 /* SearchViewController.swift in Sources */,
 				140E24F71F0A675900298665 /* BookmarkViewController.swift in Sources */,
 				14155C801F0A425F00A53380 /* BookViewController.swift in Sources */,
 				14155C7E1F0A41B600A53380 /* BookshelfViewController.swift in Sources */,
 				1421EF151F0A411E00BEB695 /* AppDelegate.swift in Sources */,
 				14155C881F0A45BE00A53380 /* OutlineCell.swift in Sources */,
-				14155C821F0A449F00A53380 /* ThumbnailGridViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
