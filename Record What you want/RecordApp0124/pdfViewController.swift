@@ -7,15 +7,41 @@
 //
 
 import UIKit
-import WebKit
 import PDFKit
 import AVFoundation
 
+class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate,
+SearchViewControllerDelegate{
+    
+    ////////////////////////////////////////////////////////////
+    func searchViewController(_ searchViewController: SearchViewController, didSelectSearchResult selection: PDFSelection) {
+        selection.color = .yellow
+        pdfView2.currentSelection = selection
+        pdfView2.go(to: selection)
+    }
+    
 
-class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate{
+    var searchNavigationController: UINavigationController?
+    let pdfViewGestureRecognizer = PDFViewGestureRecognizer()
+    var pdfDocument: PDFDocument?
+    
+    @objc func showSearchView(_ sender: UIBarButtonItem) {
+        if let searchNavigationController = self.searchNavigationController {
+            present(searchNavigationController, animated: true, completion: nil)
+        } else if let navigationController = storyboard?.instantiateViewController(withIdentifier: String(describing: SearchViewController.self)) as? UINavigationController,
+            let searchViewController = navigationController.topViewController as? SearchViewController {
+            searchViewController.pdfDocument = pdfDocument
+            searchViewController.delegate = self
+            present(navigationController, animated: true, completion: nil)
+            
+            searchNavigationController = navigationController
+        }
+    }
+    ////////////////////////////////////////////////////////////
+    
     
     // delegate (다른 클래스에 있는 변수들을 가져다 쓰기 위해 사용)
-    var delegate3: sideBarViewController?
+    // var delegate3: sideBarViewController?
     var delegate: revealViewController?
     
     // Outlet 변수들
@@ -105,14 +131,22 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
+        NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
+        pdfView2.addGestureRecognizer(pdfViewGestureRecognizer)
+        
+        
+        
         makeDefaultFile()
         checkmp3List()
         initNav()
         initSideGesture()
         initPdfGesture()
+        // init_thumbnail_gesture()
         
         setupPdfView() // extension
+        
 
         let pdfName = "Human Respiratory"
         navigationItem.title = pdfName
@@ -152,6 +186,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         self.mp3List = mp3
     }
     
+    /////
     func initNav(){
         
         let backbutton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(sceneBack))
@@ -160,8 +195,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
                                           target: self,
                                           action: #selector(showShare) )
         
+        let searchButton = UIBarButtonItem(image: #imageLiteral(resourceName: "Search"), style: .plain, target: self, action: #selector(showSearchView(_:)))
+        
         self.navigationItem.leftBarButtonItem = backbutton
-        self.navigationItem.rightBarButtonItem = sharebutton
+        self.navigationItem.rightBarButtonItems = [sharebutton, searchButton]
     }
     
     func initSideGesture(){
@@ -178,6 +215,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         self.view.addGestureRecognizer(dragRight)
         
     }
+    
+    
 
     func initPdfGesture(){
         let SlideGestureDown = UISwipeGestureRecognizer(target: self, action: #selector(go_previous_page(_:)))
@@ -193,11 +232,21 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         // initialize Touch Gesture
         pdfView2.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(make_bookmark(_:)))
+<<<<<<< HEAD
 
         
+=======
+       
+>>>>>>> 31b3cda1751377163a2da434256b89bc44763e17
         pdfView2.addGestureRecognizer(tapGesture)
         tapGesture.location(in: pdfView2)
     }
+    
+
+    
+    
+ 
+    
     //****************************************************************************************************//
     
     //***** Record Functions *****//
@@ -301,8 +350,6 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         self.toolbar.maximumHeight = 150
         self.toolbar.setItems([self.play, self.pause, self.stop, self.lBlCurrentTime, self.lBlEndTime], animated: true)
         
-        
-        
         let fileManager = FileManager.default
         let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let documentsDirectory = documentsDirectory2.appendingPathComponent("mp3List")
@@ -310,23 +357,29 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
     }
     
+    // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
+    @objc func pdfViewPageChanged(_ notification: Notification) {
+        checkPage()
+    }
+ 
+
     func checkPage(){
-        let document = pdfView2.currentPage?.label
-        cur_page.text = "Page " + document! + " of " + "\(checkTotalPage())"
-        cur_page.backgroundColor = UIColor.white
-        cur_page.textAlignment = .right
-        cur_page.textColor = UIColor.black
         
-        self.usePageNumber = document!
-        
+        if let currentPage = pdfView2.currentPage, let index = pdfView2.document?.index(for: currentPage)
+            {
+                cur_page.text = "Page " + "\(index + 1) " + " of " + "\(checkTotalPage())"
+                cur_page.backgroundColor = UIColor.white
+                cur_page.textAlignment = .right
+                cur_page.textColor = UIColor.black
+                self.usePageNumber = currentPage.label!
+        } else {
+            cur_page.text = nil
+        }
     }
     
     func checkTotalPage () -> Int {
         return (pdfView2.document?.pageCount)!
-        
     }
-    
-
     // ***** Audio Functions ***** //
     
     func initPlay(){
@@ -357,7 +410,6 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         audioPlayer.delegate = self
         audioPlayer.prepareToPlay()
-       
     
         lBlEndTime.title = convertNSTimeInterval2String(audioPlayer.duration)
         lBlCurrentTime.title? = self.takeTimeList[bookmark_number]
@@ -401,13 +453,12 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     @objc func playAudio(){
         
-        self.delegate3 = self.storyboard!.instantiateViewController(withIdentifier: "sw_rear") as? sideBarViewController
+        //self.delegate3 = self.storyboard!.instantiateViewController(withIdentifier: "sw_rear") as? sideBarViewController
         audioPlayer.currentTime = parseDuration(timeString: self.playTimeFromBookmark)
         audioPlayer.delegate = self
         audioPlayer.play()
         setPlayButtons(false, pause: true, stop: true)
         progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: timePlayerSelector, userInfo: nil, repeats: true)
-        
     }
     
     @objc func pauseAudio(){
@@ -440,6 +491,11 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     func showItems() {self.toolbar.isHidden = false}
     
+    /********************************************************/
+ 
+    
+    
+    /********************************************************/
     
    // ***** sidebar Functions ***** //
 
@@ -473,20 +529,25 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             let nx = Int(position.x)
             let ny = Int(position.y)
             let button = UIButton()
+            
+            
             button.frame = CGRect(x: nx, y: ny + 50 , width: 20 , height: 20 )
             button.backgroundColor = UIColor.red.withAlphaComponent(0)
             button.setImage(UIImage(named : "bookmark2"), for: .normal)
             self.view.addSubview(button)
-            
+
             self.numberofBookmark += 1
             let bookmark : String = "Bookmark " + "\(String(describing: numberofBookmark))"
             
-        
+            
+            button.addTarget(self, action: #selector(bookmark_to_AudioPlayer), for : .touchUpInside)
             self.BookmarkPage[bookmark] = self.usePageNumber
-            print(numberofBookmark)
+            print("numberofBookmark : \(numberofBookmark)")
+            print("Button : \(button)")
             
             
-            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, name: bookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!)
+            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, mark_number : numberofBookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!)
+            
             
             buttonArr.append(bookMarkButton)
             
@@ -494,6 +555,20 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             takeBookmarkTime()
         }
        
+    }
+    
+    @objc func bookmark_to_AudioPlayer(_ sender: UIButton){
+        for component in buttonArr {
+            if component.button == sender {
+        
+                playTimeFromBookmark = takeTimeList[component.mark_number - 1]
+                lBlCurrentTime.title = playTimeFromBookmark
+                showItems()
+            }
+        }
+        
+        
+        
     }
     
  
@@ -534,9 +609,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             }
         }
         checkPage()
+       
+       
     }
 
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -596,6 +672,8 @@ extension pdfViewController {
     
     /// PDFViewの初期処理をする
     func setupPdfView() {
+        // 18.2.27 추가
+        pdfView2.document = pdfDocument
         
         // 初期表示が画面サイズにピッタリ収まるようにする
         pdfView2.autoScales = true
@@ -666,6 +744,7 @@ extension pdfViewController {
         thumbNail.backgroundColor = backgroundColor
         thumbNail.thumbnailSize = thumbnailSize
         
+        
     }
  
     // MARK: - password
@@ -709,7 +788,6 @@ extension pdfViewController {
       
     }
 }
-    
 
 extension pdfViewController: PDFDocumentDelegate {
     func didMatchString(_ instance: PDFSelection) {
@@ -722,6 +800,27 @@ extension pdfViewController: PDFDocumentDelegate {
                 //pdfView2.addSubview(marker)
     }
 }
+
+
+class PDFViewGestureRecognizer: UIGestureRecognizer {
+    var isTracking = false
+    
+    func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        isTracking = true
+    }
+    
+    func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        isTracking = false
+    }
+    
+    func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+        isTracking = false
+    }
+}
+
+
+
+
 
 
 

@@ -10,37 +10,21 @@ import UIKit
 
 class FolderViewController: UIViewController  , UITableViewDataSource , UITableViewDelegate{
     
-    
+    // folderNameList 초기화
     var folderNameList : [String]? = nil
+    // AppDelegate를 통한 앱데이터 생성
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let nextVC = segue.destination as! FileViewController
-        let cell = sender as! UITableViewCell
-        let indexPath = self.tableView.indexPath(for: cell)!
-        let selectedFileHeader = folderNameList![indexPath.row]
-        nextVC.FileHeader = selectedFileHeader
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        appDelegate.folderList = self.folderNameList!
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        // 한번 만들면 이후로 다시 만들지 않게 if문으로 수정
-        
+        // tableview delegate, datasource 사용
+        tableView.delegate = self
+        tableView.dataSource = self
         
         let fileManager = FileManager()
-        
-       
-        
         let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
         let documentsDirectory2 = documentsDirectory.appendingPathComponent("FolderList")
         let documentsDirectory4 = documentsDirectory.appendingPathComponent("mp3List")
         let documentsDirectory3 = documentsDirectory.appendingPathComponent("FolderList").appendingPathComponent("Human Respiratory")
@@ -52,294 +36,178 @@ class FolderViewController: UIViewController  , UITableViewDataSource , UITableV
         } catch {
             
         }
-        
         do {
             try fileManager.createDirectory(atPath: documentsDirectory4.path, withIntermediateDirectories: false, attributes: nil)
         } catch {
             
         }
-        
-        
         do {
             try fileManager.createDirectory(atPath: documentsDirectory3.path, withIntermediateDirectories: false, attributes: nil)
         } catch {
             
         }
         
-        
-        
-        
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // edit 버튼 위치 설정
         self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
     }
     
+    // 화면 나타나기 이전 checkFolderList 를 통해 폴더 리스트 동기화
     override func viewWillAppear(_ animated: Bool) {
         if folderNameList == nil {
             checkFolderList()
-        } else {
-            
         }
-        
     }
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        
-        
-        //tableView.setEditing(false, animated: animated)
-        
-        let status = navigationItem.rightBarButtonItem?.title
-        
-        
-        if status == "Edit" {
-            
-          
-            
-            tableView.setEditing(true, animated: animated)
-            
-            tableView.isEditing = true
-            
-            navigationItem.rightBarButtonItem?.title = "Done"
-            
-        }
-            
-        else {
-            
-            tableView.setEditing(false, animated: animated)
-            
-            tableView.isEditing = false
-            
-            navigationItem.rightBarButtonItem?.title = "Edit"
-            
-        }
-        
-        
+    // 화면 전환 전 appDelegate 로 데이터 동기화
+    override func viewWillDisappear(_ animated: Bool) {
+        appDelegate.folderList = self.folderNameList!
     }
     
-    
-    
-    
-    
-    @objc func actionsample(_ sender: UIButton){
-        
-        let alert = UIAlertController(title: "New Folder Name", message: nil, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alert.addTextField()
-        alert.addAction(cancelAction)
-        alert.addAction(okAction)
-        self.present(alert, animated:false)
-        
+    // 다음 화면인 File scene 의 Header 로 데이터 전달
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let nextVC = segue.destination as! FileViewController
+        let cell = sender as! UITableViewCell
+        let indexPath = self.tableView.indexPath(for: cell)!
+        let selectedFileHeader = folderNameList![indexPath.row]
+        nextVC.FileHeader = selectedFileHeader
     }
-    
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    // MARK: - Table view data source
-    
     
     
     @IBOutlet weak var tableView: UITableView!
     
+    // 테이블 뷰 섹션 갯수
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
-        
     }
     
+    // 테이블 뷰 셀 갯수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        
         return folderNameList!.count
-        
     }
     
-    
-    
-    
+    // 테이블 뷰 셀 기본설정 및 타이틀 설정
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier:"Cell1", for: indexPath)
         cell.imageView?.image = UIImage(named:"folder")
         cell.textLabel?.text = folderNameList?[indexPath.row]
-        //cell.textLabel!.textAlignment = NSTextAlignment.Center
-      
-        
-        
         return cell
-        
     }
-    
-    
-    
-    
+
+    // 테이블 뷰 섹션의 헤더 타이틀 설정
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
         return "Documents Folder"
-        
     }
-    
-    
-    
-    
+
+    // 테이블 뷰 셀 edit 설정
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        // Return false if you do not want the item to be re-orderable.
         return true
-        
     }
     
-    
-    
-    // Override to support editing the table view.
+    // 테이블 뷰 edit(Delete) 기능
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let item = folderNameList!.remove(at: indexPath.row)
-            // Delete the row from the data source
-            
-
-            
+             let item = folderNameList!.remove(at: indexPath.row)
              let fileManager = FileManager()
              let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-             
              let documentsDirectory = documentsDirectory2.appendingPathComponent("FolderList")
-             
              let dataPath = documentsDirectory.appendingPathComponent(item)
-             
-             do {    // removeItem(atPath: dataPath.path, withIntermediateDirectories: false, attributes: nil)
+             do {
              try fileManager.removeItem(at: dataPath)
              } catch let error as NSError {
              print("Error creating directory: \(error.localizedDescription)")
              }
-            
-            
             tableView.deleteRows(at: [indexPath], with: .fade)
-          
-
-            
         } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+            
         }
-
     }
-    
-  
-    
-    
+
+    // 테이블 뷰 셀 이동 기능
     func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         
-        let saveChanges = self.folderNameList![fromIndexPath.row]
-        let removeItem = self.folderNameList!.remove(at: fromIndexPath.row)
-        self.folderNameList!.insert(saveChanges, at : to.row)
-        
-    
-         // edit -> move ///////////////////////////////////////////////////////////////////////////////////////////////
-        
+         let saveChanges = self.folderNameList![fromIndexPath.row]
+         let removeItem = self.folderNameList!.remove(at: fromIndexPath.row)
+         self.folderNameList!.insert(saveChanges, at : to.row)
          let fileManager = FileManager()
-        
-        
-         
          let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-         
          let documentsDirectory = documentsDirectory2.appendingPathComponent("FolderList")
-        
          let keep = documentsDirectory.appendingPathComponent(saveChanges)
          let temp = documentsDirectory.appendingPathComponent(removeItem)
         
-         
-         do { // removeItem(atPath: dataPath.path, withIntermediateDirectories: false, attributes: nil)
+         do {
          try fileManager.removeItem(at: temp)
          } catch let error as NSError {
          print("Error creating directory: \(error.localizedDescription)")
          }
         
-         
-         do { // removeItem(atPath: dataPath.path, withIntermediateDirectories: false, attributes: nil)
+         do {
          try fileManager.createDirectory(at: keep, withIntermediateDirectories: false, attributes: nil)
          } catch let error as NSError {
          print("Error creating directory: \(error.localizedDescription)")
-         
          }
-   
         self.tableView.reloadData()
-      
     }
     
-    
-    
-    // Override to support conditional rearranging of the table view.
+    // 테이블 뷰 셀 move 설정
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        
-        // Return false if you do not want the item to be re-orderable.
         return true
     }
     
+    // 테이블 뷰의 edit 버튼 기능
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        
+        let status = navigationItem.rightBarButtonItem?.title
+        
+        if status == "Edit" {
+            tableView.setEditing(true, animated: animated)
+            tableView.isEditing = true
+            navigationItem.rightBarButtonItem?.title = "Done"
+        } else {
+            tableView.setEditing(false, animated: animated)
+            tableView.isEditing = false
+            navigationItem.rightBarButtonItem?.title = "Edit"
+        }
+    }
     
-    
-    
+    // plus 버튼 눌렀을시의 동작
     @IBAction func folderPlusBtn(_ sender: UIButton) {
+        
         let alert = UIAlertController(title: "New Folder Name", message: nil, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "OK", style: .default) {
-            
-            action -> Void in
-            
+        let okAction = UIAlertAction(title: "OK", style: .default) { action -> Void in
             let textField = alert.textFields![0] as UITextField
-            print(textField.text!)
-            
-            
-            
             let folderName = textField.text!
-            
             let fileManager = FileManager()
             let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-            
             let documentsDirectory = documentsDirectory2.appendingPathComponent("FolderList")
-            
             let dataPath = documentsDirectory.appendingPathComponent(folderName)
             
             do {
                 try fileManager.createDirectory(atPath: dataPath.path, withIntermediateDirectories: false, attributes: nil)
-            } catch let error as NSError {
+                } catch let error as NSError {
                 print("Error creating directory: \(error.localizedDescription)")
-            }
+                }
             
             self.folderNameList?.append(folderName)
             self.tableView.reloadData()
             
-            
-            
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {
-            action -> Void in
-            print("cancel")
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+    
         }
         
         alert.addTextField { (textField: UITextField) in
             textField.keyboardType = .default
         }
+        
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         self.present(alert, animated:true , completion: nil)
-        
-  
-        
     }
     
 
-    
+    // 경로에 있는 폴더 리스트들 확인
     func checkFolderList() {
         
         let fileManager = FileManager.default
@@ -359,22 +227,15 @@ class FolderViewController: UIViewController  , UITableViewDataSource , UITableV
         
         self.folderNameList = folderNameList
         self.tableView.reloadData()
-       
-    }
+        
+        }
+    
+        override func didReceiveMemoryWarning() {
+            super.didReceiveMemoryWarning()
+        }
+
     
 }
-
-
-
-/*
- // MARK: - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
- // Get the new view controller using segue.destinationViewController.
- // Pass the selected object to the new view controller.
- }
- */
 
 
 
