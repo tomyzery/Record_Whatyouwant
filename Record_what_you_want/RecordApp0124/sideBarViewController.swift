@@ -20,22 +20,28 @@ class sideBarViewController: UITableViewController {
         
             func sideToPage() {
                 if indexPath.section == 1 {
+                /*
                 var temp = ([String](delegate2!.BookmarkPage.keys)).sorted()
                 let temp2 = delegate2?.BookmarkPage[temp[indexPath.row]]
+                */
                 
-                let want_page = Int(temp2!)!
-                var cur_page = Int((delegate2?.pdfView2.currentPage?.label)!)!
-                
-                while cur_page != want_page {
-                    if cur_page > want_page {
-                        delegate2?.pdfView2.goToPreviousPage(delegate2?.pdfView2)
-                        cur_page -= 1
-                    } else if cur_page < want_page{
-                        delegate2?.pdfView2.goToNextPage(delegate2?.pdfView2)
-                        cur_page += 1
+                    if delegate2?.buttonArr == nil {
+                        return
+                    }else{
+                        let want_page = delegate2?.buttonArr[indexPath.row].pageNum
+                        var cur_page = Int((delegate2?.pdfView2.currentPage?.label)!)!
+                        while cur_page != want_page {
+                            if cur_page > want_page! {
+                                delegate2?.pdfView2.goToPreviousPage(delegate2?.pdfView2)
+                                cur_page -= 1
+                            } else if cur_page < want_page!{
+                                delegate2?.pdfView2.goToNextPage(delegate2?.pdfView2)
+                                cur_page += 1
+                            }
+                        }
                     }
-                }
-                    delegate2?.cur_page.text = "Page " + (delegate2?.pdfView2.currentPage?.label)! + " of " + "\(delegate2?.checkTotalPage() ?? 34)"
+                
+                    delegate2?.pageNumberLabel.text = (delegate2?.pdfView2.currentPage?.label)! + "/" + "\(delegate2?.checkTotalPage() ?? 34)"
             }
                 ////////////////////////////////////////////
         
@@ -44,7 +50,7 @@ class sideBarViewController: UITableViewController {
         }
        
         if indexPath.section == 1 {
-            self.takeTime = (delegate2?.takeTimeList[indexPath.row])!
+            self.takeTime = (delegate2?.buttonArr[indexPath.row].time)!
         } else {
         self.takeTime = "00:00"
         }
@@ -62,6 +68,7 @@ class sideBarViewController: UITableViewController {
         sideToPage()
         
         if indexPath.section == 0 {
+            delegate2?.initToolbar()
             delegate2?.initPlay()
             print("UP: \(self.takeTime)")
             delegate2!.playTimeFromBookmark = "00:00"
@@ -115,7 +122,7 @@ class sideBarViewController: UITableViewController {
         if section == 0 {
             return delegate2!.mp3List.count         // mp3 파일에 맞게 수정해라!!!!!!
         } else {
-            return delegate2!.BookmarkPage.count
+            return delegate2!.buttonArr.count
         }
     }
 
@@ -126,8 +133,11 @@ class sideBarViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: id) ?? UITableViewCell(style: .default , reuseIdentifier: id)
         
         //let BookmarkKey = [String](delegate2?.BookmarkPage?.keys)?
+        
+        /*
         let tempBook = [String](delegate2!.BookmarkPage.keys)// delegate2 ? -> ! 로 변경해야 optional error가 안뜨네요
         var BookKey = tempBook.sorted()
+        */
         
         if indexPath.section == 0 {
             cell.textLabel?.text = delegate2!.mp3List[indexPath.row]
@@ -135,9 +145,9 @@ class sideBarViewController: UITableViewController {
             
         } else {
         
-        cell.textLabel?.text = BookKey[indexPath.row]
-        cell.detailTextLabel?.text = "page :" + ((delegate2?.BookmarkPage[BookKey[indexPath.row]])! )
-                        + "      at : " + (delegate2?.takeTimeList[indexPath.row])!
+        cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
+        cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
+                        + "      at : " + (delegate2?.buttonArr[indexPath.row].time)!
         cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
         cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
             
@@ -152,10 +162,12 @@ class sideBarViewController: UITableViewController {
     {
         if editingStyle == .delete
         {
+            /*
             let tempBook = [String](delegate2!.BookmarkPage.keys) // 위 함수랑 동일하게 변수 생성하고 진행했습니다.
             var tempBookKey = tempBook.sorted()
+            */
             
-            tempBookKey.remove(at: indexPath.row)
+            // tempBookKey.remove(at: indexPath.row)
             self.tableView.reloadData()
         }
     }

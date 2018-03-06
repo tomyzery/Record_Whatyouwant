@@ -12,8 +12,8 @@
 		D516F35E2049436500C706F0 /* SearchResultsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516F35C2049436500C706F0 /* SearchResultsCell.swift */; };
 		D516F35F2049436500C706F0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D516F35D2049436500C706F0 /* SearchViewController.swift */; };
 		D516F3612049438400C706F0 /* ThumbnailGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D516F3602049438400C706F0 /* ThumbnailGridCell.xib */; };
-		D5798F4B20293A1F0059399C /* Human Respiratory.pdf in Resources */ = {isa = PBXBuildFile; fileRef = D5798F4A20293A1F0059399C /* Human Respiratory.pdf */; };
 		D581DFAF2024242800DF57A1 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D581DFAE2024242800DF57A1 /* Info.plist */; };
+		D5890798204E82380088A5C3 /* AudioInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5890797204E82380088A5C3 /* AudioInfo.swift */; };
 		D58C523920319218002741AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58C523820319218002741AE /* AppDelegate.swift */; };
 		D58C523C2031922B002741AE /* FileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58C523A2031922B002741AE /* FileViewController.swift */; };
 		D58C523D2031922B002741AE /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58C523B2031922B002741AE /* FolderViewController.swift */; };
@@ -37,8 +37,8 @@
 		D516F35C2049436500C706F0 /* SearchResultsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsCell.swift; sourceTree = "<group>"; };
 		D516F35D2049436500C706F0 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		D516F3602049438400C706F0 /* ThumbnailGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbnailGridCell.xib; sourceTree = "<group>"; };
-		D5798F4A20293A1F0059399C /* Human Respiratory.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Human Respiratory.pdf"; sourceTree = "<group>"; };
 		D581DFAE2024242800DF57A1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5890797204E82380088A5C3 /* AudioInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInfo.swift; sourceTree = "<group>"; };
 		D58C523820319218002741AE /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D58C523A2031922B002741AE /* FileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileViewController.swift; sourceTree = "<group>"; };
 		D58C523B2031922B002741AE /* FolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
@@ -98,7 +98,6 @@
 		D5A02EC32018582400AE211D /* RecordApp0124 */ = {
 			isa = PBXGroup;
 			children = (
-				D5798F4A20293A1F0059399C /* Human Respiratory.pdf */,
 				D5A02EC62018582400AE211D /* ViewController.swift */,
 				D58C523820319218002741AE /* AppDelegate.swift */,
 				D58C523B2031922B002741AE /* FolderViewController.swift */,
@@ -111,6 +110,7 @@
 				D5A02EE5201867E600AE211D /* sideBarViewController.swift */,
 				D5A02EE720186E6F00AE211D /* revealViewController.swift */,
 				C24B9B0E2027F6EE00C2DD45 /* ButtonInfo.swift */,
+				D5890797204E82380088A5C3 /* AudioInfo.swift */,
 				D5A02EC82018582400AE211D /* Main.storyboard */,
 				D5A02ECB2018582400AE211D /* Assets.xcassets */,
 				D5A02ECD2018582400AE211D /* LaunchScreen.storyboard */,
@@ -193,7 +193,6 @@
 				D516F3612049438400C706F0 /* ThumbnailGridCell.xib in Resources */,
 				D5F22611201B1495009999DB /* Info.plist in Resources */,
 				D5A02ECF2018582400AE211D /* LaunchScreen.storyboard in Resources */,
-				D5798F4B20293A1F0059399C /* Human Respiratory.pdf in Resources */,
 				D5A02ECC2018582400AE211D /* Assets.xcassets in Resources */,
 				D5A02ECA2018582400AE211D /* Main.storyboard in Resources */,
 				DD513B2C204538F10089836E /* SearchResultsCell.xib in Resources */,
@@ -218,6 +217,7 @@
 				DD513B3220455AB00089836E /* ThumbnailGridViewController.swift in Sources */,
 				D516F35F2049436500C706F0 /* SearchViewController.swift in Sources */,
 				D5A02EE820186E6F00AE211D /* revealViewController.swift in Sources */,
+				D5890798204E82380088A5C3 /* AudioInfo.swift in Sources */,
 				D58C523D2031922B002741AE /* FolderViewController.swift in Sources */,
 				D5F22613201B1495009999DB /* ToolbarItem.swift in Sources */,
 				D58C523920319218002741AE /* AppDelegate.swift in Sources */,

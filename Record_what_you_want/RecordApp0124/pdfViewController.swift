@@ -19,6 +19,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         // bookmark_show_or_hide()
     }
     
+  
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let viewController = segue.destination as? ThumbnailGridViewController {
@@ -58,21 +62,22 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     ////////////////////////////////////////////////////////////
     
-    
-    
+
+ 
     // delegate (다른 클래스에 있는 변수들을 가져다 쓰기 위해 사용)
     // var delegate3: sideBarViewController?
     var delegate: revealViewController?
     
     // Outlet 변수들
     
-    @IBOutlet weak var cur_page: UILabel!
     @IBOutlet weak var pdfView2: PDFView!
     @IBOutlet weak var thumbNail: PDFThumbnailView!
     @IBOutlet weak var recording: UIButton!
     @IBOutlet weak var lblRecordTime: UILabel!
     @IBOutlet weak var buttonStatus: UIButton!
 
+    @IBOutlet weak var pageNumberLabel: UILabel!
+    @IBOutlet weak var pageNumberLabelContainer: UIView!
     
     // 북마크, 녹음 시 음원 파일의 정보 담고 있는 변수들
     
@@ -84,13 +89,13 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     var mp3List : [String] = [] // 녹음 후 생성되는 mp3 파일 리스트, sidebar에 Bookmark 추가할 때 사용!
     var mp3Name : String = ""
     
-    var takeTimeList : [String] = []
+
     var usePageNumber : String = "" // pdf의 현재 페이지 받는 변수, BookmarkPage의 value 값
     var numberofBookmark : Int = 0
 
-    var BookmarkPage : [String: String] = [:] // Arrays receive bookmark's positions , sidebar 에서 특정 북마크 누를 때, 북마크가 있던 페이지로 이동하게 해주는 sideToPage() 함수에서 사용
 
     var buttonArr : [ButtonInfo] = [] // buttonInfo 구조체 변수들을 담는 배열,
+    var audioArr : [audioinfo] = []
     
     // Record Variables
 
@@ -149,11 +154,41 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] == nil {
+            return
+        } else {
+            buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!; print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\(buttonArr)")
+        }
+        
+        if appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name] == nil {
+            return
+        } else {
+            self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name]!
+        }
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        appDelegate.ButtonToUse[(delegate?.eachPDFName)!] = buttonArr
+    
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pageNumberLabelContainer.layer.cornerRadius = 4
+        pageNumberLabelContainer.alpha = 0.7
+
+        
+        
         // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
+        
+        
         pdfView2.addGestureRecognizer(pdfViewGestureRecognizer)
         // 18.2.27 추가
         
@@ -166,10 +201,12 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         setupPdfView() // extension
         
-
-        let pdfName = "Human Respiratory"
+        let fileManager = FileManager.default
+        let documentsDirectoryTmp = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let filePath = documentsDirectoryTmp.appendingPathComponent("FolderList").appendingPathComponent((self.delegate?.eachFolderName)!)
+            .appendingPathComponent((self.delegate?.eachFolderName)! + "_pdf").appendingPathComponent((self.delegate?.eachPDFName)! + ".pdf")
         navigationItem.title = self.delegate?.eachPDFName
-        showPDF(pdfName: pdfName)
+        showPDF(pdfUrl: filePath)
 
         checkPage()
         // var label : String? = pdfView2.currentPage
@@ -278,11 +315,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     //***** Record Functions *****//
     
-    func takeBookmarkTime () {
-        let tmp = lblRecordTime.text
-        self.takeTimeList.append(tmp!)
-        print(self.takeTimeList)
-    }
+
     
 
     @objc func updateRecordTime(){
@@ -385,6 +418,11 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             .appendingPathComponent((self.delegate?.eachFolderName)! + "_audio").appendingPathComponent((self.delegate?.eachPDFName)!)
         audioFile = documentsDirectory.appendingPathComponent(self.mp3Name+".m4a")
         
+        let audioTakeTime = audioinfo(firsttime: lBlCurrentTime.title!, lasttime: lBlEndTime.title!)
+        
+        audioArr.append(audioTakeTime)
+        
+        
     }
     
     // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
@@ -398,13 +436,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         if let currentPage = pdfView2.currentPage, let index = pdfView2.document?.index(for: currentPage)
             {
-                cur_page.text = "Page " + "\(index + 1) " + " of " + "\(checkTotalPage())"
-                cur_page.backgroundColor = UIColor.white
-                cur_page.textAlignment = .right
-                cur_page.textColor = UIColor.black
+                pageNumberLabel.text = "\(index + 1) " + "/" + "\(checkTotalPage())"
                 self.usePageNumber = currentPage.label!
         } else {
-            cur_page.text = nil
+            pageNumberLabel.text = nil
         }
     }
     
@@ -443,7 +478,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         audioPlayer.prepareToPlay()
     
         lBlEndTime.title = convertNSTimeInterval2String(audioPlayer.duration)
-        lBlCurrentTime.title? = self.takeTimeList[bookmark_number]
+        lBlCurrentTime.title? = self.buttonArr[bookmark_number].time
         
         self.pause.isEnabled = false
         self.stop.isEnabled = false
@@ -473,6 +508,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
 
     @objc func updatePlayTime() {
         lBlCurrentTime.title = convertNSTimeInterval2String(audioPlayer.currentTime)
+        
     }
     
     func setPlayButtons(_ play: Bool, pause : Bool , stop : Bool){
@@ -507,6 +543,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         progressTimer.invalidate()
         hideItems()
         self.buttonStatus.isHidden = false
+        
         
     }
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
@@ -568,22 +605,21 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             self.view.addSubview(button)
 
             self.numberofBookmark += 1
-            let bookmark : String = "Bookmark " + "\(String(describing: numberofBookmark))"
+            // let bookmark : String = "Bookmark " + "\(String(describing: numberofBookmark))"
             
             
             button.addTarget(self, action: #selector(bookmark_to_AudioPlayer), for : .touchUpInside)
-            self.BookmarkPage[bookmark] = self.usePageNumber
-            print("numberofBookmark : \(numberofBookmark)")
-            print("Button : \(button)")
+
+            let tmp = lblRecordTime.text
             
             
-            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, mark_number : numberofBookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!)
+            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, mark_number : numberofBookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!, time : tmp!)
             
             
             buttonArr.append(bookMarkButton)
             
             // 18.02.03 19:26 배열에 잘 저장되는 점 확인(문제 : 터치 통해 page 변경할 때만 pageNumber 가 배열에 올바르게 저장됨, thumbNail 통해 페이지 변경할 때도 pageNumber가 잘 바뀌어야 함!)
-            takeBookmarkTime()
+         
         }
        
     }
@@ -591,7 +627,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         for component in buttonArr {
             if component.button == sender {
         
-                playTimeFromBookmark = takeTimeList[component.mark_number - 1]
+                playTimeFromBookmark = component.time
                 lBlCurrentTime.title = playTimeFromBookmark
                 showItems()
             }
@@ -803,6 +839,15 @@ extension pdfViewController {
         pdfView2.document = document
       
     }
+    
+    func loadButtonArr() {
+        for component in buttonArr {
+            component.button.isEnabled = false
+            component.button.isHidden = false
+        }
+        
+    }
+    
 }
 
 extension pdfViewController: PDFDocumentDelegate {

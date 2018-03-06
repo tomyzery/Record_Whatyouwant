@@ -133,6 +133,9 @@
                             <outlet property="delegate" destination="kIj-tL-2Oq" id="dv1-zJ-ufH"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="0Yj-KX-oUn" kind="show" id="T5Z-8K-kdv"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HFb-re-SLi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -171,21 +174,12 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="reD-G4-pMM" userLabel="pdfView2" customClass="PDFView">
                                 <rect key="frame" x="0.0" y="64" width="375" height="517"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.19595666019999999" blue="0.14361800220000001" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Btc-dd-Y7r" userLabel="ThumbNail" customClass="PDFThumbnailView">
                                 <rect key="frame" x="0.0" y="579" width="375" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.1693577336" green="0.1479378428" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.45000000000000001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CurrentPage" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIw-p3-x0O">
-                                <rect key="frame" x="120" y="545" width="228" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.7193509615" green="0.70846585139999996" blue="0.65554832900000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVX-hY-gJO">
                                 <rect key="frame" x="169" y="620" width="36" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -206,6 +200,20 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t8B-rx-TeR" userLabel="Page Number Label Container">
+                                <rect key="frame" x="146" y="545" width="82" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uj8-Qw-Rle" userLabel="Page Number Label">
+                                        <rect key="frame" x="4" y="4" width="74" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.70173552849999998" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="ltY-a8-GbR"/>
@@ -220,8 +228,9 @@
                     <connections>
                         <outlet property="ThumbNail" destination="Btc-dd-Y7r" id="FXf-Tp-6aJ"/>
                         <outlet property="buttonStatus" destination="RVX-hY-gJO" id="7kI-y4-OTG"/>
-                        <outlet property="cur_page" destination="tIw-p3-x0O" id="BXN-lY-vwK"/>
                         <outlet property="lblRecordTime" destination="d8A-cd-P8v" id="CC8-8d-h80"/>
+                        <outlet property="pageNumberLabel" destination="uj8-Qw-Rle" id="o4G-yz-CTh"/>
+                        <outlet property="pageNumberLabelContainer" destination="t8B-rx-TeR" id="uFJ-Qd-96n"/>
                         <outlet property="pdfView2" destination="reD-G4-pMM" id="AMQ-6N-2As"/>
                         <outlet property="recording" destination="RVX-hY-gJO" id="cY5-Zz-O0g"/>
                         <outlet property="tableOfContentsButton" destination="c9l-0g-h8s" id="XxS-UO-RK9"/>
@@ -230,7 +239,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wog-LW-U7j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1022" y="3128"/>
+            <point key="canvasLocation" x="-1023.2" y="3127.2863568215894"/>
         </scene>
         <!--Thumbnail Grid View Controller-->
         <scene sceneID="3SS-Ct-4PE">
@@ -532,4 +541,7 @@
         <image name="recordBefore" width="128" height="128"/>
         <image name="settings-2" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="T5Z-8K-kdv"/>
+    </inferredMetricsTieBreakers>
 </document>

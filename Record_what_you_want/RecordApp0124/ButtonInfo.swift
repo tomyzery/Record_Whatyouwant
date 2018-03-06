@@ -18,15 +18,15 @@ struct ButtonInfo {
     var ypos : Int
     var mark_number : Int
     var pageNum : Int
+    var time : String
     
-    
-    init(button : UIButton, xpos : Int, ypos : Int, mark_number : Int, pageNum : Int){
+    init(button : UIButton, xpos : Int, ypos : Int, mark_number : Int, pageNum : Int, time : String){
         self.button = button
         self.mark_number = mark_number
         self.xpos = xpos
         self.ypos = ypos
         self.pageNum = pageNum
-
+        self.time = time
     }
 
 }

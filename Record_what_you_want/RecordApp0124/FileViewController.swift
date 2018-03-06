@@ -16,7 +16,8 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
     
     // RecordedList , NonRecordedList 초기화
     var PDFFileList : [String] = []
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     
 
     // Folder scene 에서 받아오는 테이블 뷰의 헤더
@@ -32,11 +33,12 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
         
         // 화면 시작 전 기존 파일들 리스트 동기화
         self.checkPDFFileList()
+   
     }
     
     // 화면 전환 전 appDelegate 로 데이터 동기화
     override func viewWillDisappear(_ animated: Bool) {
-        appDelegate.folderList = self.PDFFileList
+        appDelegate.PDFFileList = self.PDFFileList
     }
 
     // 선택한 pdf 이름 넘기기
@@ -141,13 +143,17 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
 
     func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         
+   
         let saveChanges = self.PDFFileList[fromIndexPath.row]
         let removeItem = self.PDFFileList.remove(at: fromIndexPath.row)
         self.PDFFileList.insert(saveChanges, at : to.row)
         let fileManager = FileManager()
         let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let documentsDirectory = documentsDirectory2.appendingPathComponent("FolderList").appendingPathComponent(FileHeader!).appendingPathComponent(FileHeader! + "_pdf")
+
         let keep = documentsDirectory.appendingPathComponent(saveChanges)
+        
+        
         let temp = documentsDirectory.appendingPathComponent(removeItem)
         
         do {
@@ -155,6 +161,7 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
         } catch let error as NSError {
             print("Error creating directory: \(error.localizedDescription)")
         }
+ 
         
         do {
             try fileManager.createDirectory(at: keep, withIntermediateDirectories: false, attributes: nil)
@@ -162,6 +169,7 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
             print("Error creating directory: \(error.localizedDescription)")
         }
         self.tableView.reloadData()
+        
     }
     
     
