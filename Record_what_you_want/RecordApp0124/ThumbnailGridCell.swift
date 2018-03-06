@@ -29,7 +29,7 @@ class ThumbnailGridCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        pageNumberLabel.isHidden = true
+        pageNumberLabel.isHidden = false
     }
 
     override func prepareForReuse() {

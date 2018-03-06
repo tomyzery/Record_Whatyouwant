@@ -155,18 +155,23 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] == nil {
-            return
-        } else {
-            buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!; print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\(buttonArr)")
+        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
+            self.buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!; print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\(buttonArr)")
+            for component in buttonArr {
+            
+                self.view.addSubview(component.button)
+                
+            }
         }
         
+        
+        /*
         if appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name] == nil {
             return
         } else {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name]!
         }
-        
+        */
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -178,14 +183,19 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        
         pageNumberLabelContainer.layer.cornerRadius = 4
         pageNumberLabelContainer.alpha = 0.7
+        
+        
+        // 페이지 나갓다가 다시 들어올 때
+        print("다다다다다다다다다다다다다 : \(buttonArr)")
+        print("가나다라마바사 : \(buttonArr.count)")
+        
 
-        
-        
-        // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
-        
-        
+          // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
         
         
@@ -211,7 +221,11 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         checkPage()
         // var label : String? = pdfView2.currentPage
         
+       
+        
+        
     }
+    
     
     //***** Initialize Functions *****//
     
@@ -427,6 +441,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
     @objc func pdfViewPageChanged(_ notification: Notification) {
+        print("현재 페이지는  \(String(describing: pdfView2.currentPage?.label))")
         checkPage()
         bookmark_show_or_hide()
     }
@@ -636,14 +651,19 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     func bookmark_show_or_hide(){
+       
         for component in buttonArr {
             if component.pageNum == Int((pdfView2.currentPage?.label)!){
                 component.button.isHidden = false
+                
             } else {
                 component.button.isHidden = true
+                
             }
         }
     }
+    
+
     
     @objc func go_next_page(_ gesture: UISwipeGestureRecognizer) {
         
