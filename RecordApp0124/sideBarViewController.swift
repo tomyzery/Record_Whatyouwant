@@ -78,6 +78,7 @@ class sideBarViewController: UITableViewController {
             delegate2?.initPlay()
             delegate2!.playTimeFromBookmark = "00:00"
         } else {
+            
             delegate2?.initPlayBookmark(bookmark_number: indexPath.row)
             delegate2!.playTimeFromBookmark = self.takeTime
         }
@@ -150,7 +151,6 @@ class sideBarViewController: UITableViewController {
             cell.imageView?.image = #imageLiteral(resourceName: "mp3")
             
         } else {
-        
         cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
         cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
                         + "      at : " + (delegate2?.buttonArr[indexPath.row].time)!
@@ -200,19 +200,31 @@ class sideBarViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         if section == 0 {
+            if list.contains("Audio List") == false {
+                list.append("Audio List")
+            }
                 return "Audio List"
             } else {
             for i in 1 ..< delegate2!.mp3List.count {
                 if section == i {
+                    if list.contains("북마크 " + (delegate2?.mp3List[i - 1])!) == false {
+                        list.append("북마크 " + (delegate2?.mp3List[i - 1])!)
+                    }
                     return "북마크 " + (delegate2?.mp3List[i - 1])!
                 }
             }
         }
+        
+        list.append("북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1])
         return "북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1]
+        
     }
 
- 
+    var list : [String] = []
     
+    override func viewDidAppear(_ animated: Bool) {
+        print("리스트는 뭐냐 :\(list)")
+    }
 
     /*
     // Override to support rearranging the table view.

@@ -155,21 +155,27 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         self.toolbar.alpha = 1.0
         
     }
-    
+   
     override func viewWillAppear(_ animated: Bool) {
+        
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!;
+            print("buttonArr : \(buttonArr)")
             for component in buttonArr {
                 self.view.addSubview(component.button)
             }
         }
+        
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
         }
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(buttonArr)")
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(audioArr)")
-        
-        
+        bookmark_show_or_hide()
+        /*
+        for component in buttonArr {
+            component.button.addTarget(self, action: #selector(bookmark_to_AudioPlayer), for : .touchUpInside)
+        }
+        */
+ 
         /*
         if appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name] == nil {
             return
@@ -177,13 +183,13 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name]!
         }
         */
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         appDelegate.ButtonToUse[(delegate?.eachPDFName)!] = buttonArr
         appDelegate.audioContents[(delegate?.eachPDFName)!] = audioArr
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(String(describing: appDelegate.ButtonToUse[(delegate?.eachPDFName)!]))")
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(String(describing: appDelegate.audioContents[(delegate?.eachPDFName)!]))")
+       
         
     }
     
@@ -198,9 +204,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         
         // 페이지 나갓다가 다시 들어올 때
-        print("다다다다다다다다다다다다다 : \(buttonArr)")
-        print("가나다라마바사 : \(buttonArr.count)")
-        
+       
 
           // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
@@ -421,6 +425,20 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             let audioTakeTime = audioinfo(firsttime: self.lBlCurrentTime.title!, lasttime: self.lBlEndTime.title!, nameMp3:self.mp3Name+".m4a")
             self.audioArr.append(audioTakeTime)
             
+            //bookMarkButton_temp.mp3ti
+            
+            for i in 0...self.buttonArr.count - 1 {
+                if self.buttonArr[i].mp3title == "" {
+                    self.buttonArr[i].mp3title = self.mp3Name + ".m4a"
+                }
+                
+            }
+            /*
+            for var component in self.buttonArr {
+                component.mp3title = self.mp3Name + ".m4a"
+            }
+            */
+            
             self.makeDefaultFile()
            // self.initToolbar()
            // self.initPlay()
@@ -453,7 +471,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
     @objc func pdfViewPageChanged(_ notification: Notification) {
-        print("현재 페이지는  \(String(describing: pdfView2.currentPage?.label))")
+        
         checkPage()
         bookmark_show_or_hide()
     }
@@ -640,7 +658,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             let tmp = lblRecordTime.text
             
             
-            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, mark_number : numberofBookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!, time : tmp!)
+            let bookMarkButton = ButtonInfo(button: button, xpos : nx, ypos : ny, mark_number : numberofBookmark,  pageNum: Int((pdfView2.currentPage?.label)!)!, time : tmp!, mp3title : "")
+            
             
             
             buttonArr.append(bookMarkButton)
@@ -648,8 +667,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             // 18.02.03 19:26 배열에 잘 저장되는 점 확인(문제 : 터치 통해 page 변경할 때만 pageNumber 가 배열에 올바르게 저장됨, thumbNail 통해 페이지 변경할 때도 pageNumber가 잘 바뀌어야 함!)
          
         }
-       
     }
+    
+   
+    
     @objc func bookmark_to_AudioPlayer(_ sender: UIButton){
         for component in buttonArr {
             if component.button == sender {
@@ -680,7 +701,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     @objc func go_next_page(_ gesture: UISwipeGestureRecognizer) {
         
         gesture.direction = .up
-        
+
         self.pdfView2.goToNextPage(gesture)
         pdfView2.canGoToNextPage()
         // bookmark_show_or_hide()
