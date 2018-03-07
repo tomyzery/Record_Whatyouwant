@@ -12,9 +12,11 @@ class sideBarViewController: UITableViewController {
     
     var delegate: revealViewController?
     var delegate2: pdfViewController?
-    
+    var selectedMp3Name : String = ""
 
     var takeTime : String = ""
+    
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -68,18 +70,21 @@ class sideBarViewController: UITableViewController {
         sideToPage()
         
         if indexPath.section == 0 {
+            let testtest = delegate2!.mp3List[indexPath.row]
+            self.selectedMp3Name = testtest
+            print(self.selectedMp3Name)
+            audioinfo.selected = self.selectedMp3Name
             delegate2?.initToolbar()
             delegate2?.initPlay()
-            print("UP: \(self.takeTime)")
             delegate2!.playTimeFromBookmark = "00:00"
         } else {
             delegate2?.initPlayBookmark(bookmark_number: indexPath.row)
-            print("DOWN: \(self.takeTime)")
             delegate2!.playTimeFromBookmark = self.takeTime
         }
         
     }
    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -114,7 +119,7 @@ class sideBarViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return delegate2!.mp3List.count + 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -142,6 +147,7 @@ class sideBarViewController: UITableViewController {
         if indexPath.section == 0 {
             cell.textLabel?.text = delegate2!.mp3List[indexPath.row]
             cell.detailTextLabel?.text = delegate2!.currentTime
+            cell.imageView?.image = #imageLiteral(resourceName: "mp3")
             
         } else {
         
@@ -192,14 +198,21 @@ class sideBarViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Audio Files"
-        } else {
-            return "Bookmark List"
-        }
         
+        if section == 0 {
+                return "Audio List"
+            } else {
+            for i in 1 ..< delegate2!.mp3List.count {
+                if section == i {
+                    return "북마크 " + (delegate2?.mp3List[i - 1])!
+                }
+            }
+        }
+        return "북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1]
     }
+
  
+    
 
     /*
     // Override to support rearranging the table view.

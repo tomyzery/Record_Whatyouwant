@@ -81,6 +81,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     // 북마크, 녹음 시 음원 파일의 정보 담고 있는 변수들
     
+
+    
     var playTimeFromBookmark: String = "INITIAL"
     var playTimeFromBookmarkforMP3: String = "00:00"
 
@@ -156,13 +158,16 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     override func viewWillAppear(_ animated: Bool) {
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
-            self.buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!; print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\(buttonArr)")
+            self.buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!;
             for component in buttonArr {
-            
                 self.view.addSubview(component.button)
-                
             }
         }
+        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
+            self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
+        }
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(buttonArr)")
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(audioArr)")
         
         
         /*
@@ -176,14 +181,16 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     override func viewWillDisappear(_ animated: Bool) {
         appDelegate.ButtonToUse[(delegate?.eachPDFName)!] = buttonArr
-    
+        appDelegate.audioContents[(delegate?.eachPDFName)!] = audioArr
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(String(describing: appDelegate.ButtonToUse[(delegate?.eachPDFName)!]))")
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(String(describing: appDelegate.audioContents[(delegate?.eachPDFName)!]))")
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+
         
         
         pageNumberLabelContainer.layer.cornerRadius = 4
@@ -255,7 +262,9 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         } catch {
             print("error")
         }
+   
         self.mp3List = mp3
+        
     }
     
     /////
@@ -408,9 +417,13 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             }
             let timeStamp = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
             self.currentTime = String(describing: timeStamp)
+            
+            let audioTakeTime = audioinfo(firsttime: self.lBlCurrentTime.title!, lasttime: self.lBlEndTime.title!, nameMp3:self.mp3Name+".m4a")
+            self.audioArr.append(audioTakeTime)
+            
             self.makeDefaultFile()
-            self.initToolbar()
-            self.initPlay()
+           // self.initToolbar()
+           // self.initPlay()
             self.lblRecordTime.isHidden = true
         }
       
@@ -430,12 +443,11 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let documentsDirectory = documentsDirectory2.appendingPathComponent("FolderList").appendingPathComponent((self.delegate?.eachFolderName)!)
             .appendingPathComponent((self.delegate?.eachFolderName)! + "_audio").appendingPathComponent((self.delegate?.eachPDFName)!)
-        audioFile = documentsDirectory.appendingPathComponent(self.mp3Name+".m4a")
         
-        let audioTakeTime = audioinfo(firsttime: lBlCurrentTime.title!, lasttime: lBlEndTime.title!)
         
-        audioArr.append(audioTakeTime)
+        audioFile = documentsDirectory.appendingPathComponent(audioinfo.selected)
         
+
         
     }
     
