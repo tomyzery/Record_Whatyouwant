@@ -29,6 +29,8 @@ class ThumbnailGridViewController: UICollectionViewController, UICollectionViewD
         }
         return CGSize(width: 100, height: 150)
     }
+    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
