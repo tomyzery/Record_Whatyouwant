@@ -81,6 +81,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     // 북마크, 녹음 시 음원 파일의 정보 담고 있는 변수들
     
+
+    
     var playTimeFromBookmark: String = "INITIAL"
     var playTimeFromBookmarkforMP3: String = "00:00"
 
@@ -155,37 +157,52 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] == nil {
-            return
-        } else {
-            buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!; print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\(buttonArr)")
+        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
+            self.buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!;
+            for component in buttonArr {
+                self.view.addSubview(component.button)
+            }
         }
+        if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
+            self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
+        }
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(buttonArr)")
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(audioArr)")
         
+        
+        /*
         if appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name] == nil {
             return
         } else {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name]!
         }
-        
+        */
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         appDelegate.ButtonToUse[(delegate?.eachPDFName)!] = buttonArr
-    
+        appDelegate.audioContents[(delegate?.eachPDFName)!] = audioArr
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(String(describing: appDelegate.ButtonToUse[(delegate?.eachPDFName)!]))")
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(String(describing: appDelegate.audioContents[(delegate?.eachPDFName)!]))")
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        pageNumberLabelContainer.layer.cornerRadius = 4
-        pageNumberLabelContainer.alpha = 0.7
 
         
         
-        // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
+        pageNumberLabelContainer.layer.cornerRadius = 4
+        pageNumberLabelContainer.alpha = 0.7
         
         
+        // 페이지 나갓다가 다시 들어올 때
+        print("다다다다다다다다다다다다다 : \(buttonArr)")
+        print("가나다라마바사 : \(buttonArr.count)")
+        
+
+          // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
         
         
@@ -211,7 +228,11 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         checkPage()
         // var label : String? = pdfView2.currentPage
         
+       
+        
+        
     }
+    
     
     //***** Initialize Functions *****//
     
@@ -241,7 +262,9 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         } catch {
             print("error")
         }
+   
         self.mp3List = mp3
+        
     }
     
     /////
@@ -394,9 +417,13 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             }
             let timeStamp = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
             self.currentTime = String(describing: timeStamp)
+            
+            let audioTakeTime = audioinfo(firsttime: self.lBlCurrentTime.title!, lasttime: self.lBlEndTime.title!, nameMp3:self.mp3Name+".m4a")
+            self.audioArr.append(audioTakeTime)
+            
             self.makeDefaultFile()
-            self.initToolbar()
-            self.initPlay()
+           // self.initToolbar()
+           // self.initPlay()
             self.lblRecordTime.isHidden = true
         }
       
@@ -416,17 +443,17 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         let documentsDirectory2 = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         let documentsDirectory = documentsDirectory2.appendingPathComponent("FolderList").appendingPathComponent((self.delegate?.eachFolderName)!)
             .appendingPathComponent((self.delegate?.eachFolderName)! + "_audio").appendingPathComponent((self.delegate?.eachPDFName)!)
-        audioFile = documentsDirectory.appendingPathComponent(self.mp3Name+".m4a")
         
-        let audioTakeTime = audioinfo(firsttime: lBlCurrentTime.title!, lasttime: lBlEndTime.title!)
         
-        audioArr.append(audioTakeTime)
+        audioFile = documentsDirectory.appendingPathComponent(audioinfo.selected)
         
+
         
     }
     
     // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
     @objc func pdfViewPageChanged(_ notification: Notification) {
+        print("현재 페이지는  \(String(describing: pdfView2.currentPage?.label))")
         checkPage()
         bookmark_show_or_hide()
     }
@@ -636,14 +663,19 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     func bookmark_show_or_hide(){
+       
         for component in buttonArr {
             if component.pageNum == Int((pdfView2.currentPage?.label)!){
                 component.button.isHidden = false
+                
             } else {
                 component.button.isHidden = true
+                
             }
         }
     }
+    
+
     
     @objc func go_next_page(_ gesture: UISwipeGestureRecognizer) {
         
