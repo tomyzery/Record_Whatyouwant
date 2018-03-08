@@ -427,15 +427,19 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             
             //bookMarkButton_temp.mp3ti
             
+            //  error 북마크 안찍고 녹음 완료했을 때 buttonArr.count - 1 = -1 이 되어 error 발생!
             for i in 0...self.buttonArr.count - 1 {
                 if self.buttonArr[i].mp3title == "" {
                     self.buttonArr[i].mp3title = self.mp3Name + ".m4a"
                 }
                 
             }
+ 
             /*
-            for var component in self.buttonArr {
-                component.mp3title = self.mp3Name + ".m4a"
+            for component in self.buttonArr {
+                if component.mp3title = "" {
+                    component.mp3title == self.mp3Name + ".m4a"
+                }
             }
             */
             

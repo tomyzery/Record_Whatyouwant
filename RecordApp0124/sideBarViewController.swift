@@ -200,30 +200,46 @@ class sideBarViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         if section == 0 {
-            if list.contains("Audio List") == false {
                 list.append("Audio List")
-            }
                 return "Audio List"
             } else {
             for i in 1 ..< delegate2!.mp3List.count {
                 if section == i {
-                    if list.contains("북마크 " + (delegate2?.mp3List[i - 1])!) == false {
-                        list.append("북마크 " + (delegate2?.mp3List[i - 1])!)
-                    }
+                   list.append("북마크 " + (delegate2?.mp3List[i - 1])!)
                     return "북마크 " + (delegate2?.mp3List[i - 1])!
                 }
             }
         }
         
         list.append("북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1])
-        return "북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1]
         
+        // 중복 원소 제거 code
+        var list2 : [String] = []
+        for i in 0 ..< list.count {
+            if list2.contains(list[i]) == false {
+                list2.append(list[i])
+            }
+        }
+        self.list2 = list2
+        /*
+        for i in 0 ..< list.count {
+            let component = list[i]
+            for j in i ... list.count - 1 {
+                if list[j] == component {
+                    list.remove(at: j)
+                    list.
+                }
+            }
+        }
+        */
+        return "북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1]
     }
 
     var list : [String] = []
+    var list2 : [String] = []
     
     override func viewDidAppear(_ animated: Bool) {
-        print("리스트는 뭐냐 :\(list)")
+        print("리스트는 뭐냐 :\(list2)")
     }
 
     /*
