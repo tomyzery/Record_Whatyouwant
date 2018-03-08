@@ -216,8 +216,8 @@ class sideBarViewController: UITableViewController {
         // 중복 원소 제거 code
         var list_not_overlap : [String] = []
         for i in 0 ..< list_overlap.count {
-            if list_not_overlap.contains(list[i]) == false {
-                list_not_overlap.append(list[i])
+            if list_not_overlap.contains(list_overlap[i]) == false {
+                list_not_overlap.append(list_overlap[i])
             }
         }
         self.list_not_overlap = list_not_overlap
@@ -239,7 +239,7 @@ class sideBarViewController: UITableViewController {
     var list_not_overlap : [String] = []
     
     override func viewDidAppear(_ animated: Bool) {
-        print("리스트는 뭐냐 :\(list2)")
+        print("리스트는 뭐냐 :\(list_not_overlap)")
     }
 
     /*
