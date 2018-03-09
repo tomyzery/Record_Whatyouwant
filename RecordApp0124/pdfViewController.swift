@@ -160,7 +160,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.buttonArr = appDelegate.ButtonToUse[(delegate?.eachPDFName)!]!;
-            print("buttonArr : \(buttonArr)")
+            print("################################################# buttonArr : \(buttonArr)")
             for component in buttonArr {
                 self.view.addSubview(component.button)
             }
@@ -170,6 +170,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
         }
         bookmark_show_or_hide()
+        
+
         /*
         for component in buttonArr {
             component.button.addTarget(self, action: #selector(bookmark_to_AudioPlayer), for : .touchUpInside)
@@ -189,6 +191,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     override func viewWillDisappear(_ animated: Bool) {
         appDelegate.ButtonToUse[(delegate?.eachPDFName)!] = buttonArr
         appDelegate.audioContents[(delegate?.eachPDFName)!] = audioArr
+ 
        
         
     }
@@ -266,7 +269,12 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         } catch {
             print("error")
         }
-   
+        if mp3.count != 0 {
+            
+        for i in 0 ..< mp3.count {
+            mp3[i].removeLast(4)
+            }
+        }
         self.mp3List = mp3
         
     }
@@ -516,7 +524,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     func initPlayBookmark(bookmark_number : Int){
-        
+            
         do{
             audioPlayer = try AVAudioPlayer(contentsOf : audioFile!)
         } catch let error as NSError {

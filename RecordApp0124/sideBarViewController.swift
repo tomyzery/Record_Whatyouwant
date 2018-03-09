@@ -10,12 +10,21 @@ import UIKit
 
 class sideBarViewController: UITableViewController {
     
+    
     var delegate: revealViewController?
     var delegate2: pdfViewController?
     var selectedMp3Name : String = ""
 
     var takeTime : String = ""
     
+    var listAll : [String] = []
+    var listBookmark : [String] = []
+
+    var tmp_listBookmark : [String] = []
+    var tmp_buttontitle : [String] = []
+    var listBookmarkFinal : [String] = []
+    var buttontitleFinal : [String] = []
+ 
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -88,7 +97,7 @@ class sideBarViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //titles.append(String(describing: delegate2?.numberofBookmark))
         
         let bookMarkLIst = UILabel()
@@ -109,6 +118,15 @@ class sideBarViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        // buttontitleFinal 은 viewdidload에 올리자
+        for i in 0 ..< delegate2!.buttonArr.count {
+            self.tmp_buttontitle.append(delegate2!.buttonArr[i].mp3title)
+            self.tmp_buttontitle[i].removeLast(4)
+        }
+        buttontitleFinal = tmp_buttontitle
+
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -138,32 +156,61 @@ class sideBarViewController: UITableViewController {
         let id = "menucell"
         let cell = tableView.dequeueReusableCell(withIdentifier: id) ?? UITableViewCell(style: .default , reuseIdentifier: id)
         
-        //let BookmarkKey = [String](delegate2?.BookmarkPage?.keys)?
-        
-        /*
-        let tempBook = [String](delegate2!.BookmarkPage.keys)// delegate2 ? -> ! 로 변경해야 optional error가 안뜨네요
-        var BookKey = tempBook.sorted()
-        */
         
         if indexPath.section == 0 {
             cell.textLabel?.text = delegate2!.mp3List[indexPath.row]
             cell.detailTextLabel?.text = delegate2!.currentTime
             cell.imageView?.image = #imageLiteral(resourceName: "mp3")
             
-        } else {
-        cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
-        cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
-                        + "      at : " + (delegate2?.buttonArr[indexPath.row].time)!
-        cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+      
             
-        
+        } else {
+            
+       
+            self.tmp_listBookmark = self.listBookmark
+            
+            
+            for i in 0 ..< self.tmp_listBookmark.count {
+                tmp_listBookmark[i].removeLast(14)
+                self.listBookmarkFinal.append(tmp_listBookmark[i])
+            }
+            listBookmarkFinal = tmp_listBookmark    // 여기까지 해결
+            
+            
+            /*
+            for i in 0 ..< self.tmp_buttontitle.count {
+                //tmp_buttontitle[i].removeLast(4)
+                self.buttontitleFinal.append(tmp_buttontitle[i])
+            }
+            */
+            
+            // buttontitleFinal = [111, 222, 222, 333, 333, 333] // button 이 찍힌 음원 파일의 리스트
+            // listBookmarkFinal = [333, DS_S, 111, 222]    // list Header
+            
+            //override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+            
+            for i in 0 ..< self.buttontitleFinal.count {
+                for j in 0 ..< self.listBookmarkFinal.count {
+                    if self.buttontitleFinal[i] == self.listBookmarkFinal[j] {
+            
+            
+                        
+            cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
+            cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
+                + "   at : " + (delegate2?.buttonArr[indexPath.row].time)!
+            cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+            
+                        }
+                    }
+                }
+            
         }
-        
+            
         return cell
+    
     }
-   
-
+        
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
     {
         if editingStyle == .delete
@@ -199,38 +246,43 @@ class sideBarViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        var list_overlap : [String] = []
-        var list_not_overlap : [String] = []
-        
         if section == 0 {
-                list_overlap.append("Audio List")
-                return "Audio List"
-            } else {
+            return "Audio List"
+        } else {
             for i in 1 ..< delegate2!.mp3List.count {
                 if section == i {
-                   list_overlap.append("북마크 " + (delegate2?.mp3List[i - 1])!)
-                    return "북마크 " + (delegate2?.mp3List[i - 1])!
+                    if listAll.contains((delegate2?.mp3List[i - 1])! + " Bookmark List") == false {
+                        listAll.append((delegate2?.mp3List[i - 1])! + " Bookmark List")
+                    }
+                    listAll.append((delegate2?.mp3List[i - 1])! + " Bookmark List")
+                    return (delegate2?.mp3List[i - 1])! + " Bookmark List"
                 }
             }
         }
-        list_overlap.append("북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1])
         
+        listAll.append(delegate2!.mp3List[delegate2!.mp3List.count - 1] + " Bookmark List")
+
         // 중복 원소 제거 code
-        for i in 0 ..< list_overlap.count {
-            if list_not_overlap.contains(list_overlap[i]) == false {
-                list_not_overlap.append(list_overlap[i])
+        var listBookmark : [String] = []
+        for i in 0 ..< listAll.count {
+            if listBookmark.contains(listAll[i]) == false {
+                listBookmark.append(listAll[i])
             }
         }
-        self.list_not_overlap = list_not_overlap
-        return "북마크 " + delegate2!.mp3List[delegate2!.mp3List.count - 1]
+        self.listBookmark = listBookmark
+        
+        return delegate2!.mp3List[delegate2!.mp3List.count - 1] + " Bookmark List"
+        
     }
     
-    
-    var list_overlap : [String] = []
-    var list_not_overlap : [String] = []
-    
     override func viewDidAppear(_ animated: Bool) {
-        print("리스트는 뭐냐 :\(list_not_overlap)")
+        print("리스트는 뭐냐 :\(listAll)")
+        print("리스트는 뭐냐 :\(listBookmark)")
+        print("tmp_listBookmark : \(tmp_listBookmark)")
+        print("listBookmarkFinal : \(listBookmarkFinal)")
+        print("tmp_buttontitle : \(tmp_buttontitle)")
+        print("buttontitleFinal : \(buttontitleFinal)")
+        print("buttonArr : \(delegate2!.buttonArr)")
     }
 
     /*
