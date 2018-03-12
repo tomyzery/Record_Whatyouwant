@@ -19,14 +19,18 @@ struct ButtonInfo {
     var mark_number : Int
     var pageNum : Int
     var time : String
+    var mp3title : String
     
-    init(button : UIButton, xpos : Int, ypos : Int, mark_number : Int, pageNum : Int, time : String){
+    init(button : UIButton, xpos : Int, ypos : Int, mark_number : Int, pageNum : Int, time : String, mp3title : String){
         self.button = button
         self.mark_number = mark_number
         self.xpos = xpos
         self.ypos = ypos
         self.pageNum = pageNum
         self.time = time
+        self.mp3title = mp3title
     }
-
+    
+    
+    // self.mp3Name + ".m4a"
 }
