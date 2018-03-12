@@ -166,6 +166,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
         }
+        
+        bookmark_show_or_hide()
+        
+        
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(buttonArr)")
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(audioArr)")
         
