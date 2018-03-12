@@ -31,6 +31,19 @@
 		DD513B3220455AB00089836E /* ThumbnailGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD513B3120455AB00089836E /* ThumbnailGridViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D5840E85205683AD00134E8A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		C24B9B0E2027F6EE00C2DD45 /* ButtonInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonInfo.swift; sourceTree = "<group>"; };
 		D516F35A2049434F00C706F0 /* ThumbnailGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThumbnailGridCell.swift; sourceTree = "<group>"; };
@@ -141,6 +154,7 @@
 				D5A02EBD2018582400AE211D /* Sources */,
 				D5A02EBE2018582400AE211D /* Frameworks */,
 				D5A02EBF2018582400AE211D /* Resources */,
+				D5840E85205683AD00134E8A /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
