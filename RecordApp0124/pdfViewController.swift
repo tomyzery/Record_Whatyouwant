@@ -195,6 +195,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        print("엠피쓰리 리스트!!! : \(mp3List)")
+        
         appDelegate.ButtonToUse[(delegate?.eachPDFName)!] = buttonArr
         appDelegate.audioContents[(delegate?.eachPDFName)!] = audioArr
  
