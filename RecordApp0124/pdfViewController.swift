@@ -6,6 +6,12 @@
 //  Copyright © 2018년 LTH. All rights reserved.
 //
 
+
+// 북마크 섹션별로 분류하는 방법 참고 URL---------------------------------------------------------------------------------
+// https://stackoverflow.com/questions/38520771/how-to-add-rows-to-specific-section-in-tableview-with-dictionary
+// https://stackoverflow.com/questions/29579554/how-do-i-append-a-tableviewcell-to-a-specific-section-in-swift
+// --------------------------------------------------------------------------------------------------------------
+
 import UIKit
 import PDFKit
 import AVFoundation
@@ -169,6 +175,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
         }
+<<<<<<< HEAD
 //<<<<<<< HEAD:Record_what_you_want/RecordApp0124/pdfViewController.swift
         
         bookmark_show_or_hide()
@@ -181,6 +188,10 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         bookmark_show_or_hide()
 //>>>>>>> 5a4ee1fc2e9dfa1b52fc66e3b7844986d3b61592:RecordApp0124/pdfViewController.swift
         
+=======
+        bookmark_show_or_hide()
+        
+>>>>>>> e72933d015b2a66dff16df23379df5412c797e77
 
         /*
         for component in buttonArr {
@@ -446,13 +457,14 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             //bookMarkButton_temp.mp3ti
             
             //  error 북마크 안찍고 녹음 완료했을 때 buttonArr.count - 1 = -1 이 되어 error 발생!
-            for i in 0...self.buttonArr.count - 1 {
-                if self.buttonArr[i].mp3title == "" {
-                    self.buttonArr[i].mp3title = self.mp3Name + ".m4a"
+            if self.buttonArr.count != 0 {
+                for i in 0...self.buttonArr.count - 1 {
+                    if self.buttonArr[i].mp3title == "" {
+                        self.buttonArr[i].mp3title = self.mp3Name + ".m4a"
+                    }
+                    
                 }
-                
             }
- 
             /*
             for component in self.buttonArr {
                 if component.mp3title = "" {
@@ -485,7 +497,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             .appendingPathComponent((self.delegate?.eachFolderName)! + "_audio").appendingPathComponent((self.delegate?.eachPDFName)!)
         
         
-        audioFile = documentsDirectory.appendingPathComponent(audioinfo.selected)
+        audioFile = documentsDirectory.appendingPathComponent(audioinfo.selected + ".m4a")
         
 
         

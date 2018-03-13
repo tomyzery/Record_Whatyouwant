@@ -6,6 +6,11 @@
 //  Copyright © 2018년 seok. All rights reserved.
 //
 
+// 북마크 섹션별로 분류하는 방법 참고 URL---------------------------------------------------------------------------------
+// https://stackoverflow.com/questions/38520771/how-to-add-rows-to-specific-section-in-tableview-with-dictionary
+// https://stackoverflow.com/questions/29579554/how-do-i-append-a-tableviewcell-to-a-specific-section-in-swift
+// --------------------------------------------------------------------------------------------------------------
+
 import UIKit
 
 class sideBarViewController: UITableViewController {
@@ -20,11 +25,11 @@ class sideBarViewController: UITableViewController {
     var listAll : [String] = []
     var listBookmark : [String] = []
 
-    var tmp_listBookmark : [String] = []
+
     var tmp_buttontitle : [String] = []
-    var listBookmarkFinal : [String] = []
+
     var buttontitleFinal : [String] = []
- 
+    
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -120,11 +125,14 @@ class sideBarViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         // buttontitleFinal 은 viewdidload에 올리자
+        
         for i in 0 ..< delegate2!.buttonArr.count {
             self.tmp_buttontitle.append(delegate2!.buttonArr[i].mp3title)
             self.tmp_buttontitle[i].removeLast(4)
         }
         buttontitleFinal = tmp_buttontitle
+        
+        
 
         
     }
@@ -161,54 +169,24 @@ class sideBarViewController: UITableViewController {
             cell.textLabel?.text = delegate2!.mp3List[indexPath.row]
             cell.detailTextLabel?.text = delegate2!.currentTime
             cell.imageView?.image = #imageLiteral(resourceName: "mp3")
-            
-      
+
             
         } else {
             
-       
-            self.tmp_listBookmark = self.listBookmark
             
             
-            for i in 0 ..< self.tmp_listBookmark.count {
-                tmp_listBookmark[i].removeLast(14)
-                self.listBookmarkFinal.append(tmp_listBookmark[i])
-            }
-            listBookmarkFinal = tmp_listBookmark    // 여기까지 해결
+                // tableView.headerView(forSection: )?.textLabel?.text == (self.buttontitleFinal[i])
+                // cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
+                // cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
+                //     + "   at : " + (delegate2?.buttonArr[indexPath.row].time)!
+                // cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
+                // cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
             
             
-            /*
-            for i in 0 ..< self.tmp_buttontitle.count {
-                //tmp_buttontitle[i].removeLast(4)
-                self.buttontitleFinal.append(tmp_buttontitle[i])
-            }
-            */
-            
-            // buttontitleFinal = [111, 222, 222, 333, 333, 333] // button 이 찍힌 음원 파일의 리스트
-            // listBookmarkFinal = [333, DS_S, 111, 222]    // list Header
-            
-            //override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
-            
-            for i in 0 ..< self.buttontitleFinal.count {
-                for j in 0 ..< self.listBookmarkFinal.count {
-                    if self.buttontitleFinal[i] == self.listBookmarkFinal[j] {
-            
-            
-                        
-            cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
-            cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
-                + "   at : " + (delegate2?.buttonArr[indexPath.row].time)!
-            cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
-            
-                        }
-                    }
-                }
             
         }
-            
+      
         return cell
-    
     }
         
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
@@ -251,16 +229,16 @@ class sideBarViewController: UITableViewController {
         } else {
             for i in 1 ..< delegate2!.mp3List.count {
                 if section == i {
-                    if listAll.contains((delegate2?.mp3List[i - 1])! + " Bookmark List") == false {
-                        listAll.append((delegate2?.mp3List[i - 1])! + " Bookmark List")
+                    if listAll.contains((delegate2?.mp3List[i - 1])!) == false {
+                        listAll.append((delegate2?.mp3List[i - 1])!)
                     }
-                    listAll.append((delegate2?.mp3List[i - 1])! + " Bookmark List")
-                    return (delegate2?.mp3List[i - 1])! + " Bookmark List"
+                    listAll.append((delegate2?.mp3List[i - 1])!)
+                    return (delegate2?.mp3List[i - 1])!
                 }
             }
         }
-        
-        listAll.append(delegate2!.mp3List[delegate2!.mp3List.count - 1] + " Bookmark List")
+     
+        listAll.append(delegate2!.mp3List[delegate2!.mp3List.count - 1])
 
         // 중복 원소 제거 code
         var listBookmark : [String] = []
@@ -270,20 +248,22 @@ class sideBarViewController: UITableViewController {
             }
         }
         self.listBookmark = listBookmark
+
         
-        return delegate2!.mp3List[delegate2!.mp3List.count - 1] + " Bookmark List"
+        return delegate2!.mp3List[delegate2!.mp3List.count - 1]
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         print("리스트는 뭐냐 :\(listAll)")
         print("리스트는 뭐냐 :\(listBookmark)")
-        print("tmp_listBookmark : \(tmp_listBookmark)")
-        print("listBookmarkFinal : \(listBookmarkFinal)")
         print("tmp_buttontitle : \(tmp_buttontitle)")
         print("buttontitleFinal : \(buttontitleFinal)")
         print("buttonArr : \(delegate2!.buttonArr)")
+        
     }
+    
+
 
     /*
     // Override to support rearranging the table view.

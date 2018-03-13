@@ -32,5 +32,4 @@ struct ButtonInfo {
     }
     
     
-    // self.mp3Name + ".m4a"
 }
