@@ -33,44 +33,47 @@ class sideBarViewController: UITableViewController {
     var mp3name_buttontitle : Dictionary<String, [String]> = [:]
     var mp3name_startTime : Dictionary<String, [String]> = [:]
     var mp3name_pageNum : Dictionary<String, [Int]> = [:]
+    var mp3name_markNumber : Dictionary<String, [Int]> = [:]
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        var sectionString_startTIme : [[String]] = []
+        var sectionString_pageNum : [[Int]] = []
+        
+        
+        
+        for component in mp3name_startTime.keys.sorted() { // key는 mp3name_startTIme, mp3name_pageNum 모두 동일
+            sectionString_pageNum.append(mp3name_pageNum[component]!)
+            sectionString_startTIme.append(mp3name_startTime[component]!)
+        }
+        
+        
             func sideToPage() {
                 if indexPath.section != 0 {
-                /*
-                var temp = ([String](delegate2!.BookmarkPage.keys)).sorted()
-                let temp2 = delegate2?.BookmarkPage[temp[indexPath.row]]
-                */
-                
+        
                     if delegate2?.buttonArr != nil {
-                  
-                        let want_page = delegate2?.buttonArr[indexPath.row].pageNum
+                        let want_page = sectionString_pageNum[indexPath.section - 1][indexPath.row]
                         var cur_page = Int((delegate2?.pdfView2.currentPage?.label)!)!
                         while cur_page != want_page {
-                            if cur_page > want_page! {
+                            if cur_page > want_page {
                                 delegate2?.pdfView2.goToPreviousPage(delegate2?.pdfView2)
                                 cur_page -= 1
-                            } else if cur_page < want_page!{
+                            } else if cur_page < want_page{
                                 delegate2?.pdfView2.goToNextPage(delegate2?.pdfView2)
                                 cur_page += 1
                             }
                         }
                     }
-                
                     delegate2?.pageNumberLabel.text = (delegate2?.pdfView2.currentPage?.label)! + "/" + "\(delegate2?.checkTotalPage() ?? 34)"
             }
-                ////////////////////////////////////////////
-        
-                ////////////////////////////////////////////
-            
+     
         }
        
         if indexPath.section != 0 {
-            self.takeTime = (delegate2?.buttonArr[indexPath.row].time)!
+            self.takeTime = sectionString_startTIme[indexPath.section - 1][indexPath.row]
         } else {
-        self.takeTime = "00:00"
+            self.takeTime = "00:00"
         }
         
         print("sidebar 페이지에서 받은 takeTime:\(self.takeTime)")
@@ -99,6 +102,7 @@ class sideBarViewController: UITableViewController {
             audioinfo.selected = sectionString
             delegate2?.initToolbar()
             delegate2?.initPlayBookmark(bookmark_number: indexPath.row)
+            delegate2?.lBlCurrentTime.title = sectionString_startTIme[indexPath.section - 1][indexPath.row]
             delegate2!.playTimeFromBookmark = self.takeTime
             
         }
@@ -141,13 +145,16 @@ class sideBarViewController: UITableViewController {
         for mp3name in (delegate2?.mp3List)! {
             var values : [String] = []
             var values2 : [Int] = []
+            var values3 : [Int] = []
             for component in (delegate2?.buttonArr)! {
                 if mp3name + ".m4a" == component.mp3title {
                     values.append(component.time)
                     values2.append(component.pageNum)
+                    values3.append(component.mark_number)
                 }
                 mp3name_startTime[mp3name] = values
                 mp3name_pageNum[mp3name] = values2
+                mp3name_markNumber[mp3name] = values3
             }
         }
         //mp3name_startTime["zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"] = [""]
@@ -155,6 +162,7 @@ class sideBarViewController: UITableViewController {
         
         print("엠피쓰리이름 - 시작 시간 : \(mp3name_startTime)")
         print("엠피쓰리이름 - 페이지 숫자 : \(mp3name_pageNum)")
+        print("엠피쓰리이름 - 마크 넘버 : \(mp3name_markNumber)")
         
         //titles.append(String(describing: delegate2?.numberofBookmark))
         
@@ -216,10 +224,13 @@ class sideBarViewController: UITableViewController {
         
         var sectionString_startTIme : [[String]] = []
         var sectionString_pageNum : [[Int]] = []
+        var sectionString_markNum : [[Int]] = []
+        
         
         for component in mp3name_startTime.keys.sorted() { // key는 mp3name_startTIme, mp3name_pageNum 모두 동일
             sectionString_startTIme.append(mp3name_startTime[component]!)
             sectionString_pageNum.append(mp3name_pageNum[component]!)
+            sectionString_markNum.append(mp3name_markNumber[component]!)
         }
         
         
@@ -233,7 +244,8 @@ class sideBarViewController: UITableViewController {
             cell.imageView?.image = #imageLiteral(resourceName: "mp3")
 
         } else {
-                cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
+            //
+                cell.textLabel?.text = String(describing: sectionString_markNum[indexPath.section - 1][indexPath.row])
                 cell.detailTextLabel?.text = "page :" + String(sectionString_pageNum[indexPath.section - 1][indexPath.row]) + "   at : "  + sectionString_startTIme[indexPath.section - 1][indexPath.row]
                 cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
                 cell.textLabel?.font = UIFont.systemFont(ofSize: 14)

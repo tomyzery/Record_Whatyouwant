@@ -175,21 +175,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
         }
-<<<<<<< HEAD
-
         bookmark_show_or_hide()
-        
-        
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(buttonArr)")
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\(audioArr)")
-        
-
-        bookmark_show_or_hide()
-//>>>>>>> 5a4ee1fc2e9dfa1b52fc66e3b7844986d3b61592:RecordApp0124/pdfViewController.swift
-        
-=======
-        bookmark_show_or_hide()
->>>>>>> ffe1c202d77fc2bbbdc2c4633569169dfd0ee4a6
 
         
         for component in buttonArr {
@@ -683,7 +669,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
             
             
             button.addTarget(self, action: #selector(bookmark_to_AudioPlayer), for : .touchUpInside)
-            button.isEnabled = false
+
             let tmp = lblRecordTime.text
             
             
