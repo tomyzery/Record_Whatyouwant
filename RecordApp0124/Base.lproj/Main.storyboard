@@ -171,10 +171,6 @@
                                     <navigationItem title="Title" id="mMv-Tb-cd7"/>
                                 </items>
                             </navigationBar>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="reD-G4-pMM" userLabel="pdfView2" customClass="PDFView">
-                                <rect key="frame" x="0.0" y="64" width="375" height="517"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Btc-dd-Y7r" userLabel="ThumbNail" customClass="PDFThumbnailView">
                                 <rect key="frame" x="0.0" y="579" width="375" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -200,6 +196,10 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="reD-G4-pMM" userLabel="pdfView2" customClass="PDFView">
+                                <rect key="frame" x="-1" y="64" width="375" height="510"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t8B-rx-TeR" userLabel="Page Number Label Container">
                                 <rect key="frame" x="146" y="545" width="82" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

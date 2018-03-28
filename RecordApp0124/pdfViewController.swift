@@ -68,6 +68,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     ////////////////////////////////////////////////////////////
     
+   
 
  
     // delegate (다른 클래스에 있는 변수들을 가져다 쓰기 위해 사용)
@@ -81,7 +82,6 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     @IBOutlet weak var recording: UIButton!
     @IBOutlet weak var lblRecordTime: UILabel!
     @IBOutlet weak var buttonStatus: UIButton!
-
     @IBOutlet weak var pageNumberLabel: UILabel!
     @IBOutlet weak var pageNumberLabelContainer: UIView!
     
@@ -110,7 +110,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     var recordFile : URL!
     var audioRecorder : AVAudioRecorder!
     var recordCheck : Bool = false  // false : not recoring status
-    let timeRecordSelector : Selector = #selector(pdfViewController.updateRecordTime)
+    let timeRecordSelector : Selector = #selector(updateRecordTime)
     
     // Audio Variables
     
@@ -175,6 +175,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         if appDelegate.ButtonToUse[(delegate?.eachPDFName)!] != nil {
             self.audioArr = appDelegate.audioContents[(delegate?.eachPDFName)!]!;
         }
+<<<<<<< HEAD
 
         bookmark_show_or_hide()
         
@@ -186,12 +187,15 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         bookmark_show_or_hide()
 //>>>>>>> 5a4ee1fc2e9dfa1b52fc66e3b7844986d3b61592:RecordApp0124/pdfViewController.swift
         
+=======
+        bookmark_show_or_hide()
+>>>>>>> ffe1c202d77fc2bbbdc2c4633569169dfd0ee4a6
 
-        /*
+        
         for component in buttonArr {
             component.button.addTarget(self, action: #selector(bookmark_to_AudioPlayer), for : .touchUpInside)
         }
-        */
+        
  
         /*
         if appDelegate.audioContents[(delegate?.eachPDFName)! + "." + self.mp3Name] == nil {
@@ -215,21 +219,14 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
-        
-        
         pageNumberLabelContainer.layer.cornerRadius = 4
         pageNumberLabelContainer.alpha = 0.7
         
-        
-        // 페이지 나갓다가 다시 들어올 때
-       
 
           // thumbNail 이동시 페이지 숫자 바뀌게 하는 코드
         NotificationCenter.default.addObserver(self, selector: #selector(pdfViewPageChanged(_:)), name: .PDFViewPageChanged, object: nil)
-        
-        
+       
         pdfView2.addGestureRecognizer(pdfViewGestureRecognizer)
         // 18.2.27 추가
         
@@ -251,10 +248,7 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
 
         checkPage()
         // var label : String? = pdfView2.currentPage
-        
-       
-        
-        
+
     }
     
     
@@ -317,10 +311,6 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     }
     /////
     
-    @objc func showThumbNailGridView(/*_sender: UIBarButtonItem*/){
-        
-            }
-    
     /////
     func initSideGesture(){
         let dragLeft = UIScreenEdgePanGestureRecognizer(
@@ -366,43 +356,45 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     //****************************************************************************************************//
     
     //***** Record Functions *****//
-    
-
-    
 
     @objc func updateRecordTime(){
         lblRecordTime.text = convertNSTimeInterval2String(audioRecorder.currentTime)
+
     }
-
-
+    
     @IBAction func recordButton(_ sender: UIButton) {
         
         self.lblRecordTime.isHidden = false
         if recordCheck == false {
             do{
                 let audioname = getDocumentsDirectory().appendingPathComponent("recording.m4a")
-                
+    
                 let recordSettings = [
                     AVFormatIDKey : NSNumber(value: kAudioFormatAppleLossless as UInt32),
                     AVEncoderAudioQualityKey : AVAudioQuality.max.rawValue,
                     AVEncoderBitRateKey : 320000,
                     AVNumberOfChannelsKey : 2,
                     AVSampleRateKey : 44100.0] as [String : Any]
-                
                 //
                 audioRecorder = try AVAudioRecorder(url : audioname, settings : recordSettings)
+                audioRecorder.delegate = self
+                audioRecorder.isMeteringEnabled = true
+                audioRecorder.prepareToRecord()
+
             } catch let error as NSError {
                 print("Error-initRecord : \(error)")
             }
             
-            audioRecorder.delegate = self
-            audioRecorder.isMeteringEnabled = true
-            audioRecorder.prepareToRecord()
             audioRecorder.record()
-            
             sender.setImage(#imageLiteral(resourceName: "recordAfter"), for: UIControlState())
             progressTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: timeRecordSelector, userInfo: nil, repeats: true)
+            
+            audioRecorder.updateMeters()
+            
             recordCheck = true
+            
+            
+            
         }else{
             audioRecorder.stop()
             progressTimer.invalidate()
@@ -473,6 +465,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
            // self.initToolbar()
            // self.initPlay()
             self.lblRecordTime.isHidden = true
+            
+            self.numberofBookmark = 0
         }
       
         
@@ -645,6 +639,9 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
     @objc func moveSide(_ sender: Any) {
         if sender is UIScreenEdgePanGestureRecognizer {
             self.delegate?.openSideBar(nil)
+            
+            
+            
         } else if sender is UISwipeGestureRecognizer {
             self.delegate?.closeSideBar(nil)
         }
@@ -668,6 +665,8 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         if self.buttonStatus.image(for: UIControlState()) == #imageLiteral(resourceName: "recordBefore"){
             return
         }else{
+            
+            
             let position = gesture.location(in: pdfView2)
             let nx = Int(position.x)
             let ny = Int(position.y)
@@ -699,17 +698,33 @@ class pdfViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorde
         }
     }
     
-   
-    
+
     @objc func bookmark_to_AudioPlayer(_ sender: UIButton){
-        for component in buttonArr {
-            if component.button == sender {
-        
-                playTimeFromBookmark = component.time
-                lBlCurrentTime.title = playTimeFromBookmark
-                showItems()
+        if recordCheck == true {
+            return
+        } else {
+            for component in buttonArr {
+                if component.button == sender {
+                    var name = component.mp3title
+                    
+                    for _ in 0...3 {
+                        name.removeLast()
+                    }
+
+                    audioinfo.selected = name
+                    initToolbar()
+                    initPlay()
+                    playTimeFromBookmark = component.time
+                    lBlCurrentTime.title = playTimeFromBookmark
+                    showItems()
+                    
+                }
             }
         }
+        
+        
+        
+        
 
     }
     

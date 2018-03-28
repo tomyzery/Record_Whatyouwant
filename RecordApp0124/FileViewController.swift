@@ -301,6 +301,11 @@ class FileViewController: UIViewController  ,UITableViewDataSource, UITableViewD
         actionSheetController.addAction(secondAction)
         actionSheetController.addAction(cancelAction)
         
+        actionSheetController.popoverPresentationController?.sourceView = self.view
+        actionSheetController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
+        actionSheetController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+
+     
         // present an actionSheet...
         present(actionSheetController, animated: true, completion: nil)
     }

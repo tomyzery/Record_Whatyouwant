@@ -21,30 +21,31 @@ class sideBarViewController: UITableViewController {
     var selectedMp3Name : String = ""
 
     var takeTime : String = ""
-    
+    /////
     var listAll : [String] = []
     var listBookmark : [String] = []
-
+    /////
 
     var tmp_buttontitle : [String] = []
-
     var buttontitleFinal : [String] = []
     
-    
+    //
+    var mp3name_buttontitle : Dictionary<String, [String]> = [:]
+    var mp3name_startTime : Dictionary<String, [String]> = [:]
+    var mp3name_pageNum : Dictionary<String, [Int]> = [:]
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
             func sideToPage() {
-                if indexPath.section == 1 {
+                if indexPath.section != 0 {
                 /*
                 var temp = ([String](delegate2!.BookmarkPage.keys)).sorted()
                 let temp2 = delegate2?.BookmarkPage[temp[indexPath.row]]
                 */
                 
-                    if delegate2?.buttonArr == nil {
-                        return
-                    }else{
+                    if delegate2?.buttonArr != nil {
+                  
                         let want_page = delegate2?.buttonArr[indexPath.row].pageNum
                         var cur_page = Int((delegate2?.pdfView2.currentPage?.label)!)!
                         while cur_page != want_page {
@@ -66,7 +67,7 @@ class sideBarViewController: UITableViewController {
             
         }
        
-        if indexPath.section == 1 {
+        if indexPath.section != 0 {
             self.takeTime = (delegate2?.buttonArr[indexPath.row].time)!
         } else {
         self.takeTime = "00:00"
@@ -85,17 +86,21 @@ class sideBarViewController: UITableViewController {
         sideToPage()
         
         if indexPath.section == 0 {
+   
             let testtest = delegate2!.mp3List[indexPath.row]
             self.selectedMp3Name = testtest
-            print(self.selectedMp3Name)
             audioinfo.selected = self.selectedMp3Name
             delegate2?.initToolbar()
             delegate2?.initPlay()
             delegate2!.playTimeFromBookmark = "00:00"
         } else {
-            
+            let sectionString = Array(mp3name_buttontitle.keys).sorted()[indexPath.section - 1]
+           
+            audioinfo.selected = sectionString
+            delegate2?.initToolbar()
             delegate2?.initPlayBookmark(bookmark_number: indexPath.row)
             delegate2!.playTimeFromBookmark = self.takeTime
+            
         }
         
     }
@@ -103,6 +108,53 @@ class sideBarViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for i in 0 ..< delegate2!.buttonArr.count {
+            self.tmp_buttontitle.append(delegate2!.buttonArr[i].mp3title)
+            self.tmp_buttontitle[i].removeLast(4)
+        }
+        
+        buttontitleFinal = tmp_buttontitle
+        
+        // mp3List의 첫번째 원소가 ".DS_S" 이므로 제거
+        //if delegate2?.mp3List.count != 0 {
+        //   delegate2?.mp3List.remove(at: 0)
+        //}
+        
+        // print("엠피쓰리 리스트는 뭘까요 :  \(delegate2?.mp3List)")
+        
+        // Dictionary 만들기
+        for mp3name in (delegate2?.mp3List)! {
+            var values : [String] = []
+            for buttontitle in buttontitleFinal {
+                if buttontitle == mp3name {
+                    // 이름 같을 때마다 values에 값 추가
+                    values.append(buttontitle)
+                }
+                mp3name_buttontitle[mp3name] = values
+            }
+        }
+        // 추가 이유 : mp3_buttontitle에 의미없는 이 값을 추가해야, numnberofSection를 mp3 파일 갯수로 지정할 수 있음
+        // (파일이름이 영어일때) zzzzzzzzz : sectionString을 sorting했을 때 무조건 마지막으로 들어감 -> 화면에서는 짤림 -> ok
+        mp3name_buttontitle["zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"] = [""]
+
+        for mp3name in (delegate2?.mp3List)! {
+            var values : [String] = []
+            var values2 : [Int] = []
+            for component in (delegate2?.buttonArr)! {
+                if mp3name + ".m4a" == component.mp3title {
+                    values.append(component.time)
+                    values2.append(component.pageNum)
+                }
+                mp3name_startTime[mp3name] = values
+                mp3name_pageNum[mp3name] = values2
+            }
+        }
+        //mp3name_startTime["zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"] = [""]
+        //mp3name_pageNum["zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"] = [9999999999]
+        
+        print("엠피쓰리이름 - 시작 시간 : \(mp3name_startTime)")
+        print("엠피쓰리이름 - 페이지 숫자 : \(mp3name_pageNum)")
         
         //titles.append(String(describing: delegate2?.numberofBookmark))
         
@@ -126,14 +178,6 @@ class sideBarViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         // buttontitleFinal 은 viewdidload에 올리자
-        
-        for i in 0 ..< delegate2!.buttonArr.count {
-            self.tmp_buttontitle.append(delegate2!.buttonArr[i].mp3title)
-            self.tmp_buttontitle[i].removeLast(4)
-        }
-        buttontitleFinal = tmp_buttontitle
-        
-        
 
         
     }
@@ -147,47 +191,64 @@ class sideBarViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return delegate2!.mp3List.count + 1
+        return mp3name_buttontitle.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        print("엠피쓰리,버튼이름 : \(mp3name_buttontitle)")
+        print("섹션스트링은 : \(Array(mp3name_buttontitle.keys))")
+
         if section == 0 {
-            return delegate2!.mp3List.count         // mp3 파일에 맞게 수정해라!!!!!!
+            return delegate2!.mp3List.count      // mp3 파일에 맞게 수정해라!!!!!!
         } else {
-            return delegate2!.buttonArr.count
+            
+            let sectionString = Array(mp3name_buttontitle.keys).sorted()[section - 1]
+            
+            return mp3name_buttontitle[sectionString]!.count
         }
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let id = "menucell"
         let cell = tableView.dequeueReusableCell(withIdentifier: id) ?? UITableViewCell(style: .default , reuseIdentifier: id)
         
+        var sectionString_startTIme : [[String]] = []
+        var sectionString_pageNum : [[Int]] = []
         
+        for component in mp3name_startTime.keys.sorted() { // key는 mp3name_startTIme, mp3name_pageNum 모두 동일
+            sectionString_startTIme.append(mp3name_startTime[component]!)
+            sectionString_pageNum.append(mp3name_pageNum[component]!)
+        }
+        
+        
+    
+        //let sectionString_startTIme = Array(mp3name_startTime.values)
+        //let sectionString_pageNum = Array(mp3name_pageNum.values)
+
         if indexPath.section == 0 {
             cell.textLabel?.text = delegate2!.mp3List[indexPath.row]
             cell.detailTextLabel?.text = delegate2!.currentTime
             cell.imageView?.image = #imageLiteral(resourceName: "mp3")
 
-            
         } else {
+                cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
+                cell.detailTextLabel?.text = "page :" + String(sectionString_pageNum[indexPath.section - 1][indexPath.row]) + "   at : "  + sectionString_startTIme[indexPath.section - 1][indexPath.row]
+                cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
+                cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+            }
             
             
-            
-                // tableView.headerView(forSection: )?.textLabel?.text == (self.buttontitleFinal[i])
-                // cell.textLabel?.text = String(describing: delegate2!.buttonArr[indexPath.row].mark_number)
-                // cell.detailTextLabel?.text = "page :" + String(describing: delegate2!.buttonArr[indexPath.row].pageNum)
-                //     + "   at : " + (delegate2?.buttonArr[indexPath.row].time)!
-                // cell.imageView?.image = UIImage(named: "sidebarBookmarkIcon")
-                // cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
-            
-            
-            
-        }
-      
+  
+        print("buttonArr 의 갯수 : \(delegate2!.buttonArr.count)")
+        
+        
+        print("sectionString_startTIme :\(sectionString_startTIme)")
+        print("sectionString_pageNum :\(sectionString_pageNum)")
+        
         return cell
+   
     }
         
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
@@ -225,34 +286,23 @@ class sideBarViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
+        var header_title : String?
+
         if section == 0 {
-            return "Audio List"
+            header_title = "Audio List"
         } else {
-            for i in 1 ..< delegate2!.mp3List.count {
-                if section == i {
-                    if listAll.contains((delegate2?.mp3List[i - 1])!) == false {
-                        listAll.append((delegate2?.mp3List[i - 1])!)
-                    }
-                    listAll.append((delegate2?.mp3List[i - 1])!)
-                    return (delegate2?.mp3List[i - 1])!
-                }
-            }
-        }
-     
-        listAll.append(delegate2!.mp3List[delegate2!.mp3List.count - 1])
+            
+            let tmp2_sectionString = Array(mp3name_buttontitle.keys)
+            var tmp1_sectionString = tmp2_sectionString.sorted {$0 < $1}
 
-        // 중복 원소 제거 code
-        var listBookmark : [String] = []
-        for i in 0 ..< listAll.count {
-            if listBookmark.contains(listAll[i]) == false {
-                listBookmark.append(listAll[i])
-            }
+            let sectionString = tmp1_sectionString[section - 1]
+       
+            header_title = sectionString + " Bookmark List"
+            
         }
-        self.listBookmark = listBookmark
-
         
-        return delegate2!.mp3List[delegate2!.mp3List.count - 1]
-        
+        print("헤더 타이틀은 :  \(header_title)")
+        return header_title
     }
     
     override func viewDidAppear(_ animated: Bool) {

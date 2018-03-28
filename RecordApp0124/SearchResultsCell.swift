@@ -1,6 +1,6 @@
 //
 //  SearchResultsCell.swift
-//  BookReader
+//  BookReader/Users/cscoi018/Desktop/Record_Whatyouwant 복사본/RecordApp0124/SearchResultsCell.swift
 //
 //  Created by Kishikawa Katsumi on 2017/07/03.
 //  Copyright © 2017 Kishikawa Katsumi. All rights reserved.
